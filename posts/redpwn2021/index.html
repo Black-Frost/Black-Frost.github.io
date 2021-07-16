@@ -1,0 +1,486 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>[redpwnCTF2021] pickled-onions, 2k writeups - Frost's blog</title><meta name=Description content><meta property="og:title" content="[redpwnCTF2021] pickled-onions, 2k writeups"><meta property="og:description" content="Writeup for redpwnCTF 2021"><meta property="og:type" content="article"><meta property="og:url" content="/posts/redpwn2021/"><meta property="og:image" content="/images/logo.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-07-14T20:54:37+07:00"><meta property="article:modified_time" content="2021-07-14T20:54:37+07:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="/images/logo.jpg"><meta name=twitter:title content="[redpwnCTF2021] pickled-onions, 2k writeups"><meta name=twitter:description content="Writeup for redpwnCTF 2021"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../favicon.ico><link rel=icon type=image/png sizes=32x32 href=../../favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../apple-touch-icon.png><link rel=manifest href=../../site.webmanifest><link rel=canonical href=../../posts/redpwn2021/><link rel=prev href=../../posts/old_posts/2021-06-19-flareon6-chall7-log/><link rel=stylesheet href=../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../css/style.min.css><link rel=stylesheet href=../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"[redpwnCTF2021] pickled-onions, 2k writeups","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/redpwn2021\/"},"genre":"posts","keywords":"ctf, writeup","wordcount":2202,"url":"\/posts\/redpwn2021\/","datePublished":"2021-07-14T20:54:37+07:00","dateModified":"2021-07-14T20:54:37+07:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':''==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:''==='dark')&&document.body.setAttribute('theme','dark')</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=../../ title="Frost's blog"><img class="lazyload logo" src=../../svg/loading.min.svg data-src=../../images/logo.jpg data-srcset="../../images/logo.jpg, ../../images/logo.jpg 1.5x, ../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu><div class=menu-inner><a class=menu-item href=../../posts/>Posts </a><a class=menu-item href=../../tags/>Tags </a><a class=menu-item href=../../about/>About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=../../ title="Frost's blog"><img class="lazyload logo" src=../../svg/loading.min.svg data-src=../../images/logo.jpg data-srcset="../../images/logo.jpg, ../../images/logo.jpg 1.5x, ../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=../../posts/ title>Posts</a><a class=menu-item href=../../tags/ title>Tags</a><a class=menu-item href=../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">[redpwnCTF2021] pickled-onions, 2k writeups</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-07-14>2021-07-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2202 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;11 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#pickled-onions>pickled-onions</a><ul><li><a href=#analyzing-the-source-code>Analyzing the source code:</a></li><li><a href=#analyzing-the-pickle-opcodes>Analyzing the pickle opcodes:</a></li><li><a href=#finding-the-flag>Finding the flag:</a></li></ul></li><li><a href=#2k>2k</a><ul><li><a href=#analyzing-main-function-and-parsing-the-opcodes>Analyzing main function and parsing the opcodes:</a></li><li><a href=#solving-using-z3>Solving using z3:</a></li></ul></li></ul></nav></div></div><div class=content id=content><h2 id=pickled-onions>pickled-onions</h2><div class="details admonition info open"><div class="details-summary admonition-title"><i class="icon fas fa-info-circle fa-fw"></i>Given file<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><a href=../../posts/redpwn2021/pickle/chall.py rel>chall.py</a></div></div></div><h3 id=analyzing-the-source-code>Analyzing the source code:</h3><p>We are given a .py file, so the first thing I did was throwing that in a text editor.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=nb>__import__</span><span class=p>(</span><span class=s1>&#39;pickle&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>loads</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;(I128</span><span class=se>\n</span><span class=s1>I4</span><span class=se>\n</span><span class=s1>I99</span><span class=se>\n</span><span class=s1>I112</span><span class=se>\n</span><span class=s1>I105</span><span class=se>\n</span><span class=s1>I99... #truncated )</span>
+</code></pre></td></tr></table></div></div><p>The source contains just one line of code and it has something to do with <a href=https://docs.python.org/3/library/pickle.html target=_blank rel="noopener noreffer">pickle</a>, which is a built-in python model used for &ldquo;serializing and de-serializing a Python object structure&rdquo;. In other words, it converts a python object to a byte stream, and vice versa.</p><p>After googling for a while, I learned that the byte stream is a sequence of opcodes for the <code>Virtual pickle machine</code>. This is a stack-based VM that will interpret those opcodes and build python objects for us. I also learned that, with the right opcodes, <code>Virtual pickle machine</code> can <a href=https://adrianstoll.com/computer-insecurity/python-in-a-pickle.html target=_blank rel="noopener noreffer">execute Python code</a>!</p><p>If we try running the provided .py script, it will ask us for the correct input. But we don&rsquo;t see that anywhere in the source code. At this point, I was pretty sure that this program uses the pickle VM to execute something, so the main logic is (probably) in that long byte stream.</p><h3 id=analyzing-the-pickle-opcodes>Analyzing the pickle opcodes:</h3><p>Pickle opcodes are one character and followed by their arguments, arguments are terminated with a newline. You can take a look at the list of all opcodes and what each of them does <a href=https://github.com/python/cpython/blob/main/Lib/pickle.py#L111 target=_blank rel="noopener noreffer">here</a></p><p>Luckily, we don&rsquo;t have to parse those opcodes by hand. Python has a built-in module - <a href=https://docs.python.org/3/library/pickletools.html target=_blank rel="noopener noreffer">pickletools</a> - to help us do just that. Using <code>pickletools.dis()</code>, we will have the disassembled version of our opcode.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=n>pickletools</span><span class=o>.</span><span class=n>dis</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;(I128</span><span class=se>\n</span><span class=s1>I4</span><span class=se>\n</span><span class=s1>I99</span><span class=se>\n</span><span class=s1>I112</span><span class=se>\n</span><span class=s1>I105</span><span class=se>\n</span><span class=s1>I99... #truncated )</span>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>/*...*/
+544203: I        INT        73
+544207: I        INT        54
+544211: I        INT        52
+544215: I        INT        10
+544219: I        INT        133
+544224: I        INT        82
+544228: I        INT        133
+544233: I        INT        82
+544237: I        INT        147
+544242: I        INT        133
+544247: I        INT        82
+544251: I        INT        133
+544256: I        INT        82
+544260: I        INT        133
+544265: I        INT        82
+544269: I        INT        46
+544273: t        TUPLE      (MARK at 0)
+544274: p    PUT        69420
+544281: c    GLOBAL     &#39;pickle loads&#39;
+544295: c    GLOBAL     &#39;builtins bytes&#39;
+544311: g    GET        69420
+544318: \x85 TUPLE1
+544319: R    REDUCE
+544320: \x85 TUPLE1
+544321: R    REDUCE
+544322: .    STOP
+</code></pre></td></tr></table></div></div><p>The program pushes a bunch of numbers into the stack and once again calls <code>pickle.loads()</code>, which means those numbers are pickle opcodes. With the help of <code>pickletools.genops()</code>, I was able to extract the numbers and disassemble them.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=n>tup</span> <span class=o>=</span> <span class=p>[]</span>
+<span class=k>for</span> <span class=n>op</span> <span class=ow>in</span> <span class=n>pickletools</span><span class=o>.</span><span class=n>genops</span><span class=p>(</span><span class=n>code</span><span class=p>):</span>
+    <span class=p>(</span><span class=n>opcode</span><span class=p>,</span> <span class=n>arg</span><span class=p>,</span> <span class=n>pos</span><span class=p>)</span> <span class=o>=</span> <span class=n>op</span>    
+    <span class=k>if</span> <span class=p>(</span><span class=n>opcode</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;INT&#34;</span><span class=p>):</span>
+        <span class=n>tup</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>arg</span><span class=p>)</span>
+<span class=n>pickletools</span><span class=o>.</span><span class=n>dis</span><span class=p>(</span><span class=nb>bytes</span><span class=p>(</span><span class=n>tup</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>   13: (    MARK
+   14: \x8c     SHORT_BINUNICODE &#39;pickledhorseradish&#39;
+   34: C        SHORT_BINBYTES b&#39;\x80\x04cpickle\nio\ncio\npickledmacadamia.__add__\ncio\npickledbarberry\n\x85R.&#39;
+  101: \x8c     SHORT_BINUNICODE &#39;pickledcoconut&#39;
+  117: C        SHORT_BINBYTES b&#39;\x80\x04cpickle\nio\ncio\npickledmacadamia.__sub__\ncio\npickledbarberry\n\x85R.&#39;
+
+/*...*/
+
+119476: \x8c     SHORT_BINUNICODE &#39;pickledpupunha&#39;
+119492: \x8c     SHORT_BINUNICODE &#39;Nope!&#39;
+119499: \x8c     SHORT_BINUNICODE &#39;Correct!&#39;
+119509: \x86     TUPLE2
+119510: \x8c     SHORT_BINUNICODE &#39;pickledximenia&#39;
+119526: c        GLOBAL     &#39;builtins input&#39;
+119542: \x8c     SHORT_BINUNICODE &#39;What is the flag? &#39;
+119562: \x85     TUPLE1
+119563: R        REDUCE
+119564: \x8c     SHORT_BINUNICODE &#39;pickledgarlic&#39;
+119579: \x8c     SHORT_BINUNICODE &#39;pickledcorneliancherry&#39;
+119603: \x8c     SHORT_BINUNICODE &#39;pickledboysenberry&#39;
+119623: \x86     TUPLE2
+119624: d        DICT       (MARK at 13)
+</code></pre></td></tr></table></div></div><p>Now it builds a <code>dict</code>, with entry <code>pickledximenia</code> contains our input, <code>pickledpupunha</code> contains the tuple <code>("Nope!", "Correct!")</code>, <code>pickledgarlic</code> contains the tuple <code>('pickledcorneliancherry', 'pickledboysenberry')</code> and the rest are just opcodes. After that, we can see there are many function calls.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>119722: b    BUILD
+119723: c    GLOBAL     &#39;builtins print&#39;
+119739: c    GLOBAL     &#39;io pickledpupunha.__getitem__&#39;
+119770: c    GLOBAL     &#39;pickle loads&#39;
+119784: \x8c SHORT_BINUNICODE &#39;io&#39;
+119788: c    GLOBAL     &#39;io pickledgarlic.__getitem__&#39;
+119818: c    GLOBAL     &#39;io pickledburmesegrape.__eq__&#39;
+119849: I    INT        64
+119853: \x85 TUPLE1
+119854: R    REDUCE
+119855: \x85 TUPLE1
+119856: R    REDUCE
+119857: \x93 STACK_GLOBAL
+119858: \x85 TUPLE1
+119859: R    REDUCE
+119860: \x85 TUPLE1
+119861: R    REDUCE
+119862: \x85 TUPLE1
+119863: R    REDUCE
+119864: .    STOP
+</code></pre></td></tr></table></div></div><p>The above code can be roughly rewritten as:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=nb>print</span><span class=p>(</span><span class=n>pickledpupunha</span><span class=p>[</span><span class=n>pickledgarlic</span><span class=p>[</span><span class=nb>len</span><span class=p>(</span><span class=n>ourInput</span><span class=p>)</span> <span class=o>==</span> <span class=mi>64</span><span class=p>]()])</span>
+</code></pre></td></tr></table></div></div><p>We want the program to print <code>Correct!</code>, so the input has to be 64-char long. On top of that, <code>pickledgarlic[1]()</code>, a.k.a <code>pickledboysenberry()</code> has to return 1.</p><p>Repeating the process above, we can get the disassembled code for <code>pickledboysenberry</code>. This function constructs even more pickle opcodes, which will be used to check our input. Again, using <code>pickletools.genops()</code> and <code>pickletools.dis()</code>, we can extract those opcodes. Those functions are fairly simple. We have <code>pickledblackapple</code> to check if each character is in the range from 32 to 127. The rest of the functions follow the same pattern: push every char of input to stack, pop them out one by one and save the chars it needs, then finally perform an arithmetic check. For example, this is a checking function: <code>pickledgalendar</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>/*...*/
+  253: 0    POP
+  254: 0    POP
+  255: 0    POP
+  256: 0    POP
+  257: 0    POP
+  258: p    PUT        0
+  261: 0    POP
+  262: c    GLOBAL     &#39;pickle io&#39;
+  273: (    MARK
+  274: \x8c     SHORT_BINUNICODE &#39;pickledmacadamia&#39;
+  292: g        GET        0
+  295: \x8c     SHORT_BINUNICODE &#39;pickledbarberry&#39;
+  312: g        GET        1
+  315: \x8c     SHORT_BINUNICODE &#39;pickledgarlic&#39;
+  330: \x8c     SHORT_BINUNICODE &#39;pickledcorneliancherry&#39;
+  354: \x8c     SHORT_BINUNICODE &#39;pickledmonstera&#39;
+  371: \x86     TUPLE2
+  372: d        DICT       (MARK at 273)
+  373: b    BUILD
+  374: c    GLOBAL     &#39;pickle loads&#39;
+  388: \x8c SHORT_BINUNICODE &#39;io&#39;
+  392: c    GLOBAL     &#39;io pickledgarlic.__getitem__&#39;
+  422: c    GLOBAL     &#39;pickle io&#39;
+  433: (    MARK
+  434: \x8c     SHORT_BINUNICODE &#39;pickledmacadamia&#39;
+  452: c        GLOBAL     &#39;pickle loads&#39;
+  466: c        GLOBAL     &#39;io pickledlychee&#39;
+  484: \x85     TUPLE1
+  485: R        REDUCE
+  486: \x8c     SHORT_BINUNICODE &#39;pickledbarberry&#39;
+  503: I        INT        57
+  507: d        DICT       (MARK at 433)
+  508: b    BUILD
+  509: 0    POP
+  510: c    GLOBAL     &#39;pickle loads&#39;
+  524: c    GLOBAL     &#39;io pickledcrabapple&#39;
+  545: \x85 TUPLE1
+  546: R    REDUCE
+  547: \x85 TUPLE1
+  548: R    REDUCE
+  549: \x93 STACK_GLOBAL
+  550: \x85 TUPLE1
+  551: R    REDUCE
+  552: .    STOP
+</code></pre></td></tr></table></div></div><h3 id=finding-the-flag>Finding the flag:</h3><p>Since every functions follow a fixed pattern, we can easily iterate over their opcodes and generate constraints for our z3 solver.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=n>s</span> <span class=o>=</span> <span class=n>Solver</span><span class=p>()</span>
+<span class=n>flag</span> <span class=o>=</span> <span class=p>[</span><span class=n>BitVec</span><span class=p>(</span><span class=s2>&#34;x</span><span class=si>%d</span><span class=s2>&#34;</span><span class=o>%</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>8</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>64</span><span class=p>)]</span>
+
+<span class=k>def</span> <span class=nf>calVars</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>,</span> <span class=n>calculation</span><span class=p>):</span>
+    <span class=n>val</span> <span class=o>=</span> <span class=n>v1</span>
+    <span class=k>if</span> <span class=n>calculation</span> <span class=o>==</span> <span class=s2>&#34;pickledhorseradish&#34;</span><span class=p>:</span>
+        <span class=n>val</span> <span class=o>+=</span> <span class=n>v2</span>
+    <span class=k>elif</span> <span class=n>calculation</span> <span class=o>==</span> <span class=s2>&#34;pickledcoconut&#34;</span><span class=p>:</span>
+        <span class=n>val</span> <span class=o>-=</span> <span class=n>v2</span>
+    <span class=k>elif</span> <span class=n>calculation</span> <span class=o>==</span> <span class=s2>&#34;pickledlychee&#34;</span><span class=p>:</span>
+        <span class=n>val</span> <span class=o>^=</span> <span class=n>v2</span>
+    <span class=k>return</span> <span class=n>val</span>
+    
+<span class=k>def</span> <span class=nf>addConstraint</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>,</span> <span class=n>compare</span><span class=p>):</span>
+    <span class=k>if</span> <span class=n>compare</span> <span class=o>==</span> <span class=s2>&#34;pickledcrabapple&#34;</span><span class=p>:</span>
+        <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>v1</span> <span class=o>==</span> <span class=n>v2</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>compare</span> <span class=o>==</span> <span class=s2>&#34;pickledportabella&#34;</span><span class=p>:</span>
+        <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>v1</span> <span class=o>!=</span> <span class=n>v2</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>compare</span> <span class=o>==</span> <span class=s2>&#34;pickledquince&#34;</span><span class=p>:</span>
+        <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>v1</span> <span class=o>&lt;=</span> <span class=n>v2</span><span class=p>)</span>
+    <span class=k>elif</span> <span class=n>compare</span> <span class=o>==</span> <span class=s2>&#34;pickledeasternmayhawthorn&#34;</span><span class=p>:</span>
+        <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>v1</span> <span class=o>&gt;=</span> <span class=n>v2</span><span class=p>)</span>
+
+
+<span class=n>calculateFuncs</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;pickledhorseradish&#34;</span><span class=p>,</span> <span class=s2>&#34;pickledcoconut&#34;</span><span class=p>,</span> <span class=s2>&#34;pickledlychee&#34;</span><span class=p>]</span>
+<span class=n>compareFuncs</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&#34;pickledcrabapple&#34;</span><span class=p>,</span> <span class=s2>&#34;pickledportabella&#34;</span><span class=p>,</span> <span class=s2>&#34;pickledquince&#34;</span><span class=p>,</span> <span class=s2>&#34;pickledeasternmayhawthorn&#34;</span><span class=p>]</span>
+
+<span class=k>for</span> <span class=n>func</span> <span class=ow>in</span> <span class=n>checkFuncs</span><span class=p>:</span>
+    <span class=nb>iter</span> <span class=o>=</span> <span class=n>pickletools</span><span class=o>.</span><span class=n>genops</span><span class=p>(</span><span class=n>checkFuncs</span><span class=p>[</span><span class=n>func</span><span class=p>])</span>
+    <span class=n>varId</span> <span class=o>=</span> <span class=mi>63</span>
+    <span class=nb>vars</span> <span class=o>=</span> <span class=p>{}</span>
+    <span class=n>calculation</span> <span class=o>=</span> <span class=kc>None</span>
+    <span class=n>compare</span> <span class=o>=</span> <span class=kc>None</span>
+    <span class=k>for</span> <span class=n>op</span> <span class=ow>in</span> <span class=nb>iter</span><span class=p>:</span>
+        <span class=p>(</span><span class=n>opcode</span><span class=p>,</span> <span class=n>arg</span><span class=p>,</span> <span class=n>pos</span><span class=p>)</span> <span class=o>=</span> <span class=n>op</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>opcode</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;POP&#34;</span><span class=p>):</span>
+            <span class=n>varId</span> <span class=o>-=</span> <span class=mi>1</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>opcode</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;PUT&#34;</span><span class=p>):</span>
+            <span class=nb>vars</span><span class=p>[</span><span class=n>arg</span><span class=p>]</span> <span class=o>=</span> <span class=n>flag</span><span class=p>[</span><span class=n>varId</span><span class=p>]</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>arg</span> <span class=o>==</span> <span class=s2>&#34;pickledmacadamia&#34;</span><span class=p>):</span>
+            <span class=p>(</span><span class=n>nextOp</span><span class=p>,</span> <span class=n>nextArg</span><span class=p>,</span> <span class=n>nextPos</span><span class=p>)</span> <span class=o>=</span> <span class=nb>next</span><span class=p>(</span><span class=nb>iter</span><span class=p>)</span>
+            <span class=k>if</span> <span class=p>(</span><span class=n>nextOp</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;GET&#34;</span><span class=p>):</span>
+                <span class=n>pickledmacadamia</span> <span class=o>=</span> <span class=nb>vars</span><span class=p>[</span><span class=n>nextArg</span><span class=p>]</span>
+            <span class=k>elif</span> <span class=p>(</span><span class=n>nextOp</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;INT&#34;</span><span class=p>):</span>
+                <span class=n>pickledmacadamia</span> <span class=o>=</span> <span class=n>nextArg</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>arg</span> <span class=o>==</span> <span class=s2>&#34;pickledbarberry&#34;</span><span class=p>):</span>
+            <span class=p>(</span><span class=n>nextOp</span><span class=p>,</span> <span class=n>nextArg</span><span class=p>,</span> <span class=n>nextPos</span><span class=p>)</span> <span class=o>=</span> <span class=nb>next</span><span class=p>(</span><span class=nb>iter</span><span class=p>)</span>
+            <span class=k>if</span> <span class=p>(</span><span class=n>nextOp</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;GET&#34;</span><span class=p>):</span>
+                <span class=n>pickledbarberry</span> <span class=o>=</span> <span class=nb>vars</span><span class=p>[</span><span class=n>nextArg</span><span class=p>]</span>
+            <span class=k>elif</span> <span class=p>(</span><span class=n>nextOp</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;INT&#34;</span><span class=p>):</span>
+                <span class=n>pickledbarberry</span> <span class=o>=</span> <span class=n>nextArg</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>opcode</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;GLOBAL&#34;</span> <span class=ow>and</span> <span class=n>arg</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&#34;io &#34;</span><span class=p>,</span> <span class=s2>&#34;&#34;</span><span class=p>)</span> <span class=ow>in</span> <span class=n>calculateFuncs</span><span class=p>):</span>
+            <span class=n>calculation</span> <span class=o>=</span> <span class=n>arg</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&#34;io &#34;</span><span class=p>,</span> <span class=s2>&#34;&#34;</span><span class=p>)</span>
+            <span class=n>pickledmacadamia</span> <span class=o>=</span> <span class=n>calVars</span><span class=p>(</span><span class=n>pickledmacadamia</span><span class=p>,</span> <span class=n>pickledbarberry</span><span class=p>,</span> <span class=n>calculation</span><span class=p>)</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>opcode</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&#34;GLOBAL&#34;</span> <span class=ow>and</span> <span class=n>arg</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&#34;io &#34;</span><span class=p>,</span> <span class=s2>&#34;&#34;</span><span class=p>)</span> <span class=ow>in</span> <span class=n>compareFuncs</span><span class=p>):</span>
+            <span class=n>compare</span> <span class=o>=</span> <span class=n>arg</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&#34;io &#34;</span><span class=p>,</span> <span class=s2>&#34;&#34;</span><span class=p>)</span>
+    <span class=n>addConstraint</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>pickledmacadamia</span><span class=p>,</span> <span class=n>pickledbarberry</span><span class=p>,</span> <span class=n>compare</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p>And the flag is <code>flag{n0w_th4t5_4_b1g_p1ckl3_1n_4_p1ckl3_but_1t_n33d3d_s0m3_h3lp}</code></p><p>Full script: <a href=../../posts/redpwn2021/pickle/solve.py rel>solve.py</a></p><h2 id=2k>2k</h2><div class="details admonition info open"><div class="details-summary admonition-title"><i class="icon fas fa-info-circle fa-fw"></i>Given files<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><a href=../../posts/redpwn2021/2k/chall rel>chall</a>, <a href=../../posts/redpwn2021/2k/prog.bin rel>prog.bin</a></div></div></div><h3 id=analyzing-main-function-and-parsing-the-opcodes>Analyzing main function and parsing the opcodes:</h3><p>We are given a 64bit ELF, so straight to IDA it goes.</p><p>The main function first does some basic stuff like: allocate a buffer, read <code>prog.bin</code>, etc&mldr;
+After that, it iterates over each byte of <code>prog.bin</code> and does this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-c data-lang=c>    <span class=k>if</span> <span class=p>(</span> <span class=n>progBin_</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;=</span> <span class=mh>0x53u</span> <span class=p>)</span>
+      <span class=kr>__asm</span> <span class=p>{</span> <span class=n>jmp</span>     <span class=n>rax</span> <span class=p>}</span>
+</code></pre></td></tr></table></div></div><p>IDA can&rsquo;t decompile this, so we have to read the assembly code. Doing so shows me that this is clearly a switch-case statement, with the jump table at 0x21d0:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-asm data-lang=asm><span class=nl>.text:</span><span class=err>00000000000012</span><span class=nf>E1</span>                 <span class=no>lea</span>     <span class=no>r15</span><span class=p>,</span> <span class=no>unk_21D0</span>
+<span class=err>/</span><span class=na>....</span><span class=err>/</span>
+<span class=nl>.text:</span><span class=err>0000000000001300</span>                 <span class=nf>cmp</span>     <span class=no>byte</span> <span class=no>ptr</span> <span class=p>[</span><span class=no>rbp</span><span class=err>+</span><span class=no>rax</span><span class=err>+</span><span class=mi>0</span><span class=p>],</span> <span class=mi>53</span><span class=no>h</span> <span class=c>; &#39;S&#39;
+</span><span class=c></span><span class=no>.text</span><span class=p>:</span><span class=mi>0000000000001305</span>                 <span class=no>lea</span>     <span class=no>r13d</span><span class=p>,</span> <span class=p>[</span><span class=no>rdx</span><span class=err>+</span><span class=mi>1</span><span class=p>]</span>
+<span class=nl>.text:</span><span class=err>0000000000001309</span>                 <span class=nf>ja</span>      <span class=no>short</span> <span class=no>loc_1330</span>
+<span class=nl>.text:</span><span class=err>000000000000130</span><span class=nf>B</span>                 <span class=no>movzx</span>   <span class=no>eax</span><span class=p>,</span> <span class=no>byte</span> <span class=no>ptr</span> <span class=p>[</span><span class=no>rbp</span><span class=err>+</span><span class=no>rax</span><span class=err>+</span><span class=mi>0</span><span class=p>]</span>
+<span class=nl>.text:</span><span class=err>0000000000001310</span>                 <span class=nf>movsxd</span>  <span class=no>rax</span><span class=p>,</span> <span class=no>dword</span> <span class=no>ptr</span> <span class=p>[</span><span class=no>r15</span><span class=err>+</span><span class=no>rax</span><span class=p>*</span><span class=mi>4</span><span class=p>]</span>
+<span class=nl>.text:</span><span class=err>0000000000001314</span>                 <span class=nf>add</span>     <span class=no>rax</span><span class=p>,</span> <span class=no>r15</span>
+<span class=nl>.text:</span><span class=err>0000000000001317</span>                 <span class=nf>db</span>      <span class=mi>3</span><span class=no>Eh</span>
+<span class=nl>.text:</span><span class=err>0000000000001317</span>                 <span class=nf>jmp</span>     <span class=no>rax</span>
+</code></pre></td></tr></table></div></div><p>My teammate @redandblue found a <a href=https://kruztw.tw/ida-%E8%A8%AD%E5%AE%9A-switch-case/ target=_blank rel="noopener noreffer">blog</a> that show us how manually define switch-case statements in IDA. For this challenge, just go to <code>Edit -> Other -> Specify switch idiom</code>, then use the following config:</p><p><img class=lazyload src=../../svg/loading.min.svg data-src=switch.png data-srcset="../../posts/redpwn2021/switch.png, switch.png 1.5x, ../../posts/redpwn2021/switch.png 2x" data-sizes=auto alt=/posts/redpwn2021/switch.png title=/posts/redpwn2021/switch.png></p><div class="details admonition tip"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>While IDA can&rsquo;t recognize a switch statement like this, BinaryNinja can do it pretty well. So if you don&rsquo;t want to configure anything, BinaryNinja is a good choice.</div></div></div><p>After defining the switch statement, we can easily see that this is a stack-based VM. Here&rsquo;s a short summary about all of its opcodes:</p><ul><li><code>0x1</code>: Duplicate the topmost value of the stack.</li><li><code>0x2</code>: Pop a value from stack.</li><li><code>0x3</code>: Print the flag if the topmost value on stack is 0.</li><li><code>0x10, 0x11, 0x12, 0x13, 0x14, 0x15</code>: arithmetic operations</li><li><code>0x16, 0x17</code>: comparing operations</li><li><code>0x20, 0x21</code>: input/output operations</li><li><code>0x22</code>: push a specified number to stack</li><li><code>0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36</code>: jump statements</li><li>The program also has an array to be used as &ldquo;memory&rdquo; for the VM, and the last 6 opcodes: <code>0x40, 0x41, 0x50, 0x51, 0x52, 0x53</code> are operations on this memory.</li></ul><p>After knowing the functionality of every opcodes, I wrote a simple disassembler for <code>prog.bin</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=s2>&#34;prog.bin&#34;</span><span class=p>,</span> <span class=s2>&#34;rb&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+    <span class=n>opcodes</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+    
+<span class=n>opName</span> <span class=o>=</span> <span class=p>{</span><span class=mi>1</span><span class=p>:</span> <span class=s2>&#34;DUP&#34;</span><span class=p>,</span> <span class=mi>2</span><span class=p>:</span> <span class=s2>&#34;POP&#34;</span><span class=p>,</span> <span class=mi>3</span><span class=p>:</span> <span class=s2>&#34;CHECK&#34;</span><span class=p>,</span> <span class=mh>0x10</span><span class=p>:</span> <span class=s2>&#34;ADD&#34;</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>:</span> <span class=s2>&#34;SUB&#34;</span><span class=p>,</span> <span class=mh>0x12</span><span class=p>:</span> <span class=s2>&#34;MUL&#34;</span><span class=p>,</span> <span class=mh>0x13</span><span class=p>:</span> <span class=s2>&#34;DIV&#34;</span><span class=p>,</span> <span class=mh>0x14</span><span class=p>:</span> <span class=s2>&#34;MOD&#34;</span><span class=p>,</span> <span class=mh>0x15</span><span class=p>:</span> <span class=s2>&#34;MUL_MOD&#34;</span><span class=p>,</span> <span class=mh>0x16</span><span class=p>:</span> <span class=s2>&#34;IS_EQ&#34;</span><span class=p>,</span>
+    <span class=mh>0x17</span><span class=p>:</span> <span class=s2>&#34;CMP_0&#34;</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>:</span> <span class=s2>&#34;INPUT&#34;</span><span class=p>,</span> <span class=mh>0x21</span><span class=p>:</span> <span class=s2>&#34;PRINT&#34;</span><span class=p>,</span> <span class=mh>0x22</span><span class=p>:</span> <span class=s2>&#34;PUT&#34;</span><span class=p>,</span> <span class=mh>0x30</span><span class=p>:</span> <span class=s2>&#34;JMP&#34;</span><span class=p>,</span> <span class=mh>0x31</span><span class=p>:</span> <span class=s2>&#34;JZ&#34;</span><span class=p>,</span> <span class=mh>0x32</span><span class=p>:</span> <span class=s2>&#34;JNZ&#34;</span><span class=p>,</span> <span class=mh>0x33</span><span class=p>:</span> <span class=s2>&#34;JLZ&#34;</span><span class=p>,</span> <span class=mh>0x34</span><span class=p>:</span> <span class=s2>&#34;JGZ&#34;</span><span class=p>,</span> <span class=mh>0x35</span><span class=p>:</span> <span class=s2>&#34;JLEZ&#34;</span><span class=p>,</span>
+    <span class=mh>0x36</span><span class=p>:</span> <span class=s2>&#34;JGEZ&#34;</span><span class=p>,</span> <span class=mh>0x40</span><span class=p>:</span> <span class=s2>&#34;STACK_TO_ARR&#34;</span><span class=p>,</span> <span class=mh>0x41</span><span class=p>:</span> <span class=s2>&#34;ARR_TO_STACK&#34;</span><span class=p>,</span> <span class=mh>0x50</span><span class=p>:</span> <span class=s2>&#34;INC_ARR_PTR&#34;</span><span class=p>,</span> <span class=mh>0x51</span><span class=p>:</span> <span class=s2>&#34;DEC_ARR_PTR&#34;</span><span class=p>,</span> <span class=mh>0x52</span><span class=p>:</span> <span class=s2>&#34;ADD_ARR_PTR&#34;</span><span class=p>,</span> <span class=mh>0x53</span><span class=p>:</span> <span class=s2>&#34;SUB_ARR_PTR&#34;</span><span class=p>}</span> 
+
+<span class=n>rip</span> <span class=o>=</span> <span class=mi>0</span>
+<span class=k>while</span> <span class=n>rip</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>opcodes</span><span class=p>):</span>
+    <span class=n>op</span> <span class=o>=</span> <span class=n>opcodes</span><span class=p>[</span><span class=n>rip</span><span class=p>]</span>
+    
+    <span class=k>if</span> <span class=p>(</span><span class=n>op</span> <span class=o>!=</span> <span class=mh>0x22</span><span class=p>):</span>
+        <span class=nb>print</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>rip</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34;:</span><span class=se>\t\t</span><span class=s2>&#34;</span> <span class=o>+</span> <span class=n>opName</span><span class=p>[</span><span class=n>op</span><span class=p>])</span>
+        <span class=n>rip</span> <span class=o>+=</span> <span class=mi>1</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=nb>print</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>rip</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34;:</span><span class=se>\t\t</span><span class=s2>&#34;</span> <span class=o>+</span> <span class=n>opName</span><span class=p>[</span><span class=n>op</span><span class=p>]</span> <span class=o>+</span> <span class=s2>&#34;</span><span class=se>\t\t</span><span class=s2>&#34;</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>struct</span><span class=o>.</span><span class=n>unpack</span><span class=p>(</span><span class=s2>&#34;&lt;H&#34;</span><span class=p>,</span> <span class=n>opcodes</span><span class=p>[</span><span class=n>rip</span> <span class=o>+</span> <span class=mi>1</span><span class=p>:</span><span class=n>rip</span> <span class=o>+</span> <span class=mi>3</span><span class=p>])[</span><span class=mi>0</span><span class=p>]))</span>
+        <span class=n>rip</span> <span class=o>+=</span> <span class=mi>3</span>
+</code></pre></td></tr></table></div></div><h3 id=solving-using-z3>Solving using z3:</h3><p>Thanks to the disassembler, we can now understand what <code>prog.bin</code> is trying to do.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>0:		PUT		12
+3:		JMP
+4:		PUT		1
+7:		CHECK
+8:		PUT		0
+11:		CHECK
+12:		PUT		115
+</code></pre></td></tr></table></div></div><p>First, it jumps straight to address 12. But notice that, at address 8, the program pushes 0 to stack then executes the print flag instructions. We know that the program only gives us the flag if the topmost value on the stack is 0, so this must be the address we need to reach. By the same logic, we don&rsquo;t want to get to address 4.</p><p>At address 12, the program prints out the string &ldquo;<code>sice dice:</code>&rdquo;, then ask us for 64 bytes of input. It then subtracts each char by <code>0x2f</code> and puts our input to memory. After that, it performs a series of checks, following the pattern: load input char(s) from memory &ndash;> perform arithmetic operations &ndash;> compare against a constant &ndash;> jump to address 4 if the comparison is wrong.</p><p>Since there are over 6000 lines in the disassembled opcode, reading all of them and solving manually is out of the question. Instead, I tried to emulate all the opcodes in python and generate constraints for z3 automatically.</p><p>We will supply the input as z3 BitVec, and whenever there is a conditional jump to address 4, we can just skip the jump and add an appropriate constraint to z3 solver.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=n>flag</span> <span class=o>=</span> <span class=p>[</span><span class=n>BitVec</span><span class=p>(</span><span class=s2>&#34;x</span><span class=si>%d</span><span class=s2>&#34;</span><span class=o>%</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>16</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>64</span><span class=p>)]</span>
+<span class=n>flagPos</span> <span class=o>=</span> <span class=mi>0</span>
+
+<span class=o>.....</span>
+
+    <span class=k>elif</span> <span class=n>op</span> <span class=o>==</span> <span class=mh>0x20</span><span class=p>:</span>			<span class=c1>#input</span>
+        <span class=n>stack</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>flag</span><span class=p>[</span><span class=n>flagPos</span><span class=p>])</span>
+        <span class=n>flagPos</span> <span class=o>+=</span> <span class=mi>1</span>
+        <span class=n>rip</span> <span class=o>+=</span> <span class=mi>1</span>
+        
+<span class=o>.....</span>
+
+    <span class=k>elif</span> <span class=n>op</span> <span class=o>==</span> <span class=mh>0x31</span><span class=p>:</span>            <span class=c1>#jump if zero</span>
+        <span class=n>addr</span> <span class=o>=</span> <span class=n>stack</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+        <span class=n>token</span> <span class=o>=</span> <span class=n>stack</span><span class=o>.</span><span class=n>pop</span><span class=p>()</span>
+        <span class=k>if</span> <span class=n>addr</span> <span class=o>==</span> <span class=mi>4</span><span class=p>:</span>
+            <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>token</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>)</span>
+            <span class=n>rip</span> <span class=o>+=</span> <span class=mi>1</span>
+        <span class=k>elif</span> <span class=n>token</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+            <span class=n>rip</span> <span class=o>=</span> <span class=n>addr</span>
+        <span class=k>else</span><span class=p>:</span>
+            <span class=n>rip</span> <span class=o>+=</span> <span class=mi>1</span>
+</code></pre></td></tr></table></div></div><p>Since all the character is subtracted by <code>0x2f</code> before they are put to the memory, and I don&rsquo;t want to deal with negative numbers, I added the following constraints to z3.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-py data-lang=py><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>flag</span><span class=p>:</span>
+    <span class=n>s</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>And</span><span class=p>(</span><span class=n>i</span> <span class=o>&gt;=</span> <span class=mi>48</span><span class=p>,</span> <span class=n>i</span> <span class=o>&lt;=</span> <span class=mi>127</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><p>The script will generate false inputs if I remove that, so there must still be something wrong with my code. Nevertheless, it still managed to give me one correct input, and that is enough to get the flag: <code>flag{kenken_is_just_z3_064c4}</code></p><p>Full script: <a href=../../posts/redpwn2021/2k/solve.py rel>solve.py</a></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2021-07-14</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../tags/ctf/>ctf</a>,&nbsp;<a href=../../tags/writeup/>writeup</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../>Home</a></span></section></div><div class=post-nav><a href=../../posts/old_posts/2021-06-19-flareon6-chall7-log/ class=prev rel=prev title="Flareon 6 - challenge 7 (Wopr) solving log"><i class="fas fa-angle-left fa-fw"></i>Flareon 6 - challenge 7 (Wopr) solving log</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.85.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../ target=_blank>Frost</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../js/theme.min.js></script></body></html>

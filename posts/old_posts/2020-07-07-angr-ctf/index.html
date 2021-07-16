@@ -1,0 +1,356 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Angr_CTF - Frost's blog</title><meta name=Description content><meta property="og:title" content="Angr_CTF"><meta property="og:description" content="Đây là post ghi lại lời giải của những bài mình giải được trong Angr_CTF: https://github.com/jakespringer/angr_ctf. Ok, bắt đầu luôn nào.
+Note: Bài này ở wordpress thì mình ghi khá chi tiết, tuy nhiên khi dời qua đây thì bệnh lười lại tái phát. Do đó mình sẽ không ghi lại đầy đủ mà chỉ viết những điểm chính thôi (thêm nữa là không có hình chụp IDA luôn nha). Để đọc bài viết chi tiết thì bạn có thể vào đây"><meta property="og:type" content="article"><meta property="og:url" content="/posts/old_posts/2020-07-07-angr-ctf/"><meta property="og:image" content="/images/logo.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-07-07T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-07T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="/images/logo.jpg"><meta name=twitter:title content="Angr_CTF"><meta name=twitter:description content="Đây là post ghi lại lời giải của những bài mình giải được trong Angr_CTF: https://github.com/jakespringer/angr_ctf. Ok, bắt đầu luôn nào.
+Note: Bài này ở wordpress thì mình ghi khá chi tiết, tuy nhiên khi dời qua đây thì bệnh lười lại tái phát. Do đó mình sẽ không ghi lại đầy đủ mà chỉ viết những điểm chính thôi (thêm nữa là không có hình chụp IDA luôn nha). Để đọc bài viết chi tiết thì bạn có thể vào đây"><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/png sizes=32x32 href=../../../favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=../../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../../apple-touch-icon.png><link rel=manifest href=../../../site.webmanifest><link rel=canonical href=../../../posts/old_posts/2020-07-07-angr-ctf/><link rel=prev href=../../../posts/old_posts/2020-7-7-aslr/><link rel=next href=../../../posts/old_posts/2020-07-07-angr-basic/><link rel=stylesheet href=../../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../../css/style.min.css><link rel=stylesheet href=../../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Angr_CTF","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/old_posts\/2020-07-07-angr-ctf\/"},"genre":"posts","keywords":"learning, writeup","wordcount":1727,"url":"\/posts\/old_posts\/2020-07-07-angr-ctf\/","datePublished":"2020-07-07T00:00:00+00:00","dateModified":"2020-07-07T00:00:00+00:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':''==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:''==='dark')&&document.body.setAttribute('theme','dark')</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu><div class=menu-inner><a class=menu-item href=../../../posts/>Posts </a><a class=menu-item href=../../../tags/>Tags </a><a class=menu-item href=../../../about/>About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=../../../posts/ title>Posts</a><a class=menu-item href=../../../tags/ title>Tags</a><a class=menu-item href=../../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Angr_CTF</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=../../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-07-07>2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1727 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#01_angr_avoid>01_angr_avoid</a></li><li><a href=#02_angr_find_condition>02_angr_find_condition</a></li><li><a href=#03_angr_symbolic_registers>03_angr_symbolic_registers</a></li><li><a href=#04_angr_symbolic_stack>04_angr_symbolic_stack</a></li><li><a href=#05_angr_symbolic_memory>05_angr_symbolic_memory</a></li><li><a href=#06_angr_symbolic_dynamic_memory>06_angr_symbolic_dynamic_memory</a></li><li><a href=#08_angr_constraints>08_angr_constraints</a></li><li><a href=#09_angr_hooks>09_angr_hooks</a></li><li><a href=#12_angr_veritesting>12_angr_veritesting</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>Đây là post ghi lại lời giải của những bài mình giải được trong Angr_CTF: <a href=https://github.com/jakespringer/angr_ctf>https://github.com/jakespringer/angr_ctf</a>. Ok, bắt đầu luôn nào.</p><p><em>Note:</em> Bài này ở wordpress thì mình ghi khá chi tiết, tuy nhiên khi dời qua đây thì bệnh lười lại tái phát. Do đó mình sẽ không ghi lại đầy đủ mà chỉ viết những
+điểm chính thôi (thêm nữa là không có hình chụp IDA luôn nha). Để đọc bài viết chi tiết thì bạn có thể vào <a href=https://blackfrost984.wordpress.com/2020/03/30/angr_ctf/ target=_blank rel="noopener noreffer">đây</a></p><h3 id=01_angr_avoid>01_angr_avoid</h3><p>Bài này mình sẽ dùng .explore của Angr để giải.
+Khi dùng .explore() với tham số find, Angr sẽ tự động execute binary đến khi đạt được một state thỏa mãn điều kiện của find. Giá trị của find có thể là:
+– Một địa chỉ hoặc một list các địa chỉ.
+– Một hàm. Hàm này nhận tham số là một state và trả về điều kiện mà state đó cần thỏa mãn (cái này sẽ được minh họa ở bài tiếp theo)
+Các state thỏa mãn sẽ được đưa vào 1 stash tên là found (có thể hiểu stash là 1 list các state). Theo mặc định, khi tìm được 1 state thỏa mãn, Angr sẽ dừng việc tìm kiếm, tuy nhiên ta có thể thay đổi điều này bằng cách truyền thêm tham số num_found cho .explore().</p><p>Tương tự với find ta cũng có tham số avoid để chỉ ra những chỗ mà Angr cần “tránh”. Các giá trị mà avoid có thể nhận cũng tương tự như find. Khi gặp phải điều kiện khớp với tham số avoid, Angr sẽ bỏ state đang thực thi vào stash avoided, đồng thời dừng thực thi state đó.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./01_angr_avoid&#34;</span><span class=p>)</span>
+<span class=n>main</span><span class=o>=</span><span class=mh>0x08048602</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=</span><span class=n>main</span><span class=p>)</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p>“Good job” chỉ được in ở hàm “maybe_good”, nên find sẽ mang địa chỉ của hàm này. Bên cạnh đó ta cũng có hàm “avoid_me”, hàm này đưa biến “should_success” về 0 (biến này về 0 thì luôn “try again”) nên ta sẽ tránh địa chỉ hàm này.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./01_angr_avoid&#34;</span><span class=p>)</span>
+<span class=n>main</span><span class=o>=</span><span class=mh>0x08048602</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=</span><span class=n>main</span><span class=p>)</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+ 
+<span class=n>good</span><span class=o>=</span><span class=mh>0x080485E0</span>
+<span class=n>bad</span><span class=o>=</span><span class=mh>0x080485A8</span>
+ 
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>advoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+ 
+<span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;Something is wrong!&#34;</span><span class=p>)</span>
+<span class=k>else</span><span class=p>:</span>
+    <span class=n>found</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+    <span class=n>flag</span><span class=o>=</span><span class=n>found</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>flag</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p><strong>Note:</strong> simgr.found là một list gồm nhiều state, lấy một state trong đó giống như một list bình thường (simgr.found[0])</p><h3 id=02_angr_find_condition>02_angr_find_condition</h3><p>Mới đầu thì mình tưởng nó cũng giống chall trước, cơ mà nhìn vào mới thấy rắng có một đống địa chỉ in chữ “Good job.” 🙂 , do đó không truyền địa chỉ vô biến find được rồi.</p><p>Vậy phải truyền hàm vào thôi, hàm này sẽ kiểm tra xem “Good job.” có in ra màn hình không. Ta đưa thêm hàm kiểm tra “Try again” vào avoid luôn.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./02_angr_find_condition&#34;</span><span class=p>)</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>()</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+ 
+<span class=k>def</span> <span class=nf>good</span><span class=p>(</span><span class=n>state</span><span class=p>):</span>
+    <span class=k>return</span> <span class=s2>&#34;Good Job.&#34;</span> <span class=ow>in</span> <span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+<span class=k>def</span> <span class=nf>bad</span><span class=p>(</span><span class=n>state</span><span class=p>):</span>
+    <span class=k>return</span> <span class=s2>&#34;Try again.&#34;</span> <span class=ow>in</span> <span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+ 
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>avoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+<span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./02_angr_find_condition&#34;</span><span class=p>)</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>()</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+ 
+<span class=k>def</span> <span class=nf>good</span><span class=p>(</span><span class=n>state</span><span class=p>):</span>
+    <span class=k>return</span> <span class=s2>&#34;Good Job.&#34;</span> <span class=ow>in</span> <span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+<span class=k>def</span> <span class=nf>bad</span><span class=p>(</span><span class=n>state</span><span class=p>):</span>
+    <span class=k>return</span> <span class=s2>&#34;Try again.&#34;</span> <span class=ow>in</span> <span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>1</span><span class=p>))</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+ 
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>avoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+ 
+<span class=k>if</span> <span class=p>(</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+    <span class=n>result</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+    <span class=n>flag</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>posix</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+    <span class=nb>print</span> <span class=p>(</span><span class=n>flag</span><span class=p>)</span>
+<span class=k>else</span><span class=p>:</span>
+    <span class=nb>print</span> <span class=p>(</span><span class=s2>&#34;Something is wrong&#34;</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><h3 id=03_angr_symbolic_registers>03_angr_symbolic_registers</h3><p>Ở chall này, Angr không tự động inject symbol cho mình nữa. Lý do là bởi Angr chỉ có thể xử lý các format string đơn giản trong lệnh scanf. Với 3 chall trước, format string được dùng để lấy input là %8s , tuy nhiên chall này thì format string là “%x %x %x”, Angr không chèn symbol giùm được.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=c1>#create a state</span>
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./03_angr_symbolic_registers&#34;</span><span class=p>)</span>
+<span class=n>start_addr</span><span class=o>=</span><span class=mh>0x08048980</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>blank_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=</span><span class=n>start_addr</span><span class=p>)</span>
+ 
+<span class=c1>#create some symbols</span>
+<span class=n>a</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>,</span><span class=mi>32</span><span class=p>)</span>
+<span class=n>b</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;b&#34;</span><span class=p>,</span><span class=mi>32</span><span class=p>)</span>
+<span class=n>d</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;d&#34;</span><span class=p>,</span><span class=mi>32</span><span class=p>)</span>
+ 
+<span class=c1>#write those symbols to registers</span>
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>eax</span><span class=o>=</span><span class=n>a</span>
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>ebx</span><span class=o>=</span><span class=n>b</span>
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>edx</span><span class=o>=</span><span class=n>d</span>
+ 
+<span class=c1>#symbolic execution!!!</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+<span class=n>good</span><span class=o>=</span><span class=mh>0x080489EE</span>
+<span class=n>bad</span><span class=o>=</span><span class=mh>0x080489DC</span>
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>avoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+ 
+<span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+    <span class=k>raise</span> <span class=n>Execption</span><span class=p>(</span><span class=s2>&#34;Something is wrong!&#34;</span><span class=p>)</span>
+ 
+<span class=c1>#print the result</span>
+<span class=n>result</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=n>pass0</span><span class=o>=</span><span class=nb>hex</span><span class=p>(</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>a</span><span class=p>))</span>
+<span class=n>pass1</span><span class=o>=</span><span class=nb>hex</span><span class=p>(</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>b</span><span class=p>))</span>
+<span class=n>pass2</span><span class=o>=</span><span class=nb>hex</span><span class=p>(</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>d</span><span class=p>))</span>
+ 
+<span class=nb>print</span> <span class=p>(</span><span class=s2>&#34;</span><span class=si>%s</span><span class=s2> </span><span class=si>%s</span><span class=s2> </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span><span class=p>(</span><span class=n>pass0</span><span class=p>,</span> <span class=n>pass1</span><span class=p>,</span> <span class=n>pass2</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><h3 id=04_angr_symbolic_stack>04_angr_symbolic_stack</h3><p>Lần này input không lưu trên thanh ghi nữa mà được để trong stack. Vậy thì ta sẽ đưa symbol vào stack thôi!</p><p>Sau khi tạo state rồi simgr các kiểu thì giờ ta bắt đầu xét đến stack. Mình chọn entry cho state là lệnh “mov eax, [ebp+var_C]”. Vì nhảy vào ngay giữa cái hàm nên chúng ta chưa có stack frame (do 3 lệnh “push ebp”, “mov ebp, esp”,”sub esp, 18h” để tạo stack frame nằm ở đầu hàm), ta phải tự tạo thôi</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>ebp</span> <span class=o>=</span> <span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>esp</span>
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>esp</span> <span class=o>-=</span> <span class=mh>0x18</span>
+</code></pre></td></tr></table></div></div><p>Nhìn trong IDA thì thấy input được lưu trong 2 ô nhớ là [ebp-0xc] và [ebp-0x10], vậy giờ mình sẽ đẩy symbol vào 2 ô này.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>ebp</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>ebp</span><span class=p>)</span>
+<span class=n>first</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;first&#34;</span><span class=p>,</span><span class=mi>32</span><span class=n>sstate</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;second&#34;</span><span class=p>,</span><span class=mi>32</span><span class=n>state</span><span class=o>.</span><span class=n>mestate</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=n>ebp</span><span class=o>-</span><span class=mh>0xc</span><span class=p>,</span><span class=n>first</span><span class=p>,</span><span class=n>endness</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>arch</span><span class=o>.</span><span class=n>memory_endness</span><span class=p>)</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=n>ebp</span><span class=o>-</span><span class=mh>0x10</span><span class=p>,</span><span class=n>second</span><span class=p>,</span><span class=n>endness</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>arch</span><span class=o>.</span><span class=n>memory_endness</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p>**Note: ** Theo mặc định thì lệnh memory.store sẽ lưu giá trị theo kiểu “big-endian”, do đó ta cần phải chỉnh lại chỗ này cho đúng bằng cách thêm tham số endness (chỗ này mình ngồi cả buổi mới phát hiện ra 🙂 , rút kinh nghiệm lần sau phải đọc document cho kỹ)</p><p>Và phần còn lại chỉ là explore thôi</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>good</span><span class=o>=</span><span class=mh>0x080486E9</span>
+<span class=n>bad</span><span class=o>=</span><span class=mh>0x080486D7</span>
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>avoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+
+<span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+     <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&#34;Something is wrong!&#34;</span><span class=p>)</span>
+
+<span class=n>result</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=n>first</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>first</span><span class=p>,</span><span class=n>cast_to</span><span class=o>=</span><span class=nb>int</span><span class=p>)</span>
+<span class=n>second</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>second</span><span class=p>,</span><span class=n>cast_to</span><span class=o>=</span><span class=nb>int</span><span class=p>)</span>
+<span class=nb>print</span> <span class=p>(</span><span class=s2>&#34;</span><span class=si>%d</span><span class=s2> </span><span class=si>%d</span><span class=s2>&#34;</span> <span class=o>%</span><span class=p>(</span><span class=n>first</span><span class=p>,</span> <span class=n>second</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><p><strong>Note:</strong> Có một cách giải khác trong phần solution, cách này dùng lệnh “state.stack_push”. Dùng lệnh này thì ta không cần quan tâm endianess, đồng thời cách xử lý ebp và esp cũng hơi khác một chút. (Nhìn chung thì không khác nhiều, note lại để nhớ lệnh stack_push thôi 😀 )</p><h3 id=05_angr_symbolic_memory>05_angr_symbolic_memory</h3><p>Cũng như bài trước, nhưng lần này dễ hơn vì input được lưu vào trong global variable, mà các biến này thì có địa chỉ xác định.</p><h3 id=06_angr_symbolic_dynamic_memory>06_angr_symbolic_dynamic_memory</h3><p>Lần này thì binary sẽ tạo 2 vùng nhớ động rồi lưu input trên đó, điều này khiến cho cách của bài 5 không làm được vì ta chỉ biết được địa chỉ của 2 vùng nhớ vào runtime.</p><p>Tuy nhiên nhìn vào IDA thì ta thấy rằng địa chỉ của 2 vùng nhớ động sẽ được lưu trong 2 biến global đã biết địa chỉ. Vậy ý tưởng giải bài này sẽ là lưu 2 địa chỉ do mình chọn vào các biến global: buffer0 và buffer1, tiếp đó đưa 2 symbol vào 2 địa chỉ trên.</p><p>Full script như sau:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./06_angr_symbolic_dynamic_memory&#34;</span><span class=p>)</span>
+<span class=n>entry</span><span class=o>=</span><span class=mh>0x08048687</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>blank_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=</span><span class=n>entry</span><span class=p>)</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+ 
+ 
+<span class=c1>#initialize stack frame</span>
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>ebp</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>esp</span> 
+<span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>esp</span> <span class=o>-=</span><span class=mh>0x10</span>
+ 
+<span class=c1>#set the address of 2 buffer</span>
+<span class=n>buffer0</span><span class=o>=</span><span class=mh>0x10000000</span>
+<span class=n>buffer1</span><span class=o>=</span><span class=mh>0x20000000</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=mh>0x0ABCC8A4</span><span class=p>,</span><span class=n>buffer0</span><span class=p>,</span><span class=n>endness</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>arch</span><span class=o>.</span><span class=n>memory_endness</span><span class=p>)</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=mh>0x0ABCC8AC</span><span class=p>,</span><span class=n>buffer1</span><span class=p>,</span><span class=n>endness</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>arch</span><span class=o>.</span><span class=n>memory_endness</span><span class=p>)</span>
+ 
+<span class=n>sym0</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;sym0&#34;</span><span class=p>,</span><span class=mi>64</span><span class=p>)</span>
+<span class=n>sym1</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;sym1&#34;</span><span class=p>,</span><span class=mi>64</span><span class=p>)</span>
+ 
+<span class=c1>#the symbols are strings so no need for endness argument</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=n>buffer0</span><span class=p>,</span><span class=n>sym0</span><span class=p>)</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=n>buffer1</span><span class=p>,</span><span class=n>sym1</span><span class=p>)</span>
+ 
+<span class=n>good</span><span class=o>=</span><span class=mh>0x08048759</span>
+<span class=n>bad</span><span class=o>=</span><span class=mh>0x08048747</span>
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>good</span><span class=p>,</span><span class=n>avoid</span><span class=o>=</span><span class=n>bad</span><span class=p>)</span>
+ 
+<span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+    <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&#34;Something is wrong&#34;</span><span class=p>)</span>
+ 
+<span class=n>result</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=n>flag0</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>sym0</span><span class=p>,</span><span class=n>cast_to</span><span class=o>=</span><span class=nb>bytes</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+<span class=n>flag1</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>sym1</span><span class=p>,</span><span class=n>cast_to</span><span class=o>=</span><span class=nb>bytes</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s2>&#34;utf-8&#34;</span><span class=p>)</span>
+<span class=nb>print</span> <span class=p>(</span><span class=s2>&#34;</span><span class=si>%s</span><span class=s2> </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span><span class=p>(</span><span class=n>flag0</span><span class=p>,</span><span class=n>flag1</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><h3 id=08_angr_constraints>08_angr_constraints</h3><p>Binary lấy input, encode, sau đó cho vào hàm để check.</p><p>Vào hàm đó xem thì thấy nó so sánh từng char của input sau khi encode với từng chữ trong string “AUPDNNPROEZRJWKB”. Vậy là ta có một vòng lặp 16 lần, nếu để angr thử hết tất cả các trường hợp thì hơi lâu, vì thế nên bài này ta sẽ dừng ngay trước lệnh call (tức không gọi hàm so sánh), sau đó add constraint vào bằng tay. (Lưu ý là sau khi dừng chương trình để thêm constraint thì ta không cho chạy tiếp nữa, do đó ở đây không có đoạn find với avoid)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+ 
+<span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./08_angr_constraints&#34;</span><span class=p>)</span>
+<span class=n>entry</span><span class=o>=</span><span class=mh>0x08048625</span>
+<span class=n>state</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>blank_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=</span><span class=n>entry</span><span class=p>)</span>
+<span class=n>simgr</span><span class=o>=</span><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+ 
+<span class=c1>#add symbol to buffer </span>
+<span class=n>password</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVS</span><span class=p>(</span><span class=s2>&#34;password&#34;</span><span class=p>,</span><span class=mi>16</span><span class=o>*</span><span class=mi>8</span><span class=p>)</span>
+<span class=n>buffer_addr</span><span class=o>=</span><span class=mh>0x0804A050</span>
+<span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=n>buffer_addr</span><span class=p>,</span><span class=n>password</span><span class=p>)</span>
+ 
+<span class=c1>#stop before the check function </span>
+<span class=n>check_addr</span><span class=o>=</span><span class=mh>0x08048673</span>
+<span class=n>simgr</span><span class=o>.</span><span class=n>explore</span><span class=p>(</span><span class=n>find</span><span class=o>=</span><span class=n>check_addr</span><span class=p>)</span>
+<span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>):</span>
+    <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&#34;Wrong!&#34;</span><span class=p>)</span>
+ 
+<span class=n>result</span><span class=o>=</span><span class=n>simgr</span><span class=o>.</span><span class=n>found</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=n>complex_pass</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>buffer_addr</span><span class=p>,</span><span class=mi>16</span><span class=p>)</span>
+<span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>complex_pass</span><span class=o>==</span><span class=s2>&#34;AUPDNNPROEZRJWKB&#34;</span><span class=p>)</span> <span class=c1>#add 1 constraint</span>
+<span class=n>password</span><span class=o>=</span><span class=n>result</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>password</span><span class=p>,</span><span class=n>cast_to</span><span class=o>=</span><span class=nb>bytes</span><span class=p>)</span>
+<span class=nb>print</span> <span class=p>(</span><span class=n>password</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><h3 id=09_angr_hooks>09_angr_hooks</h3><p>Bài này cũng giống như bài trước, tuy nhiên có một điểm khác khiến cho việc add constraint bằng tay trở nên kém hiệu quả hơn</p><p>Sau hàm check string dài dài kia thì chương trình còn 1 lần check nữa. Nếu ta dừng lại trước hàm “check_equal…” rồi thêm constraint bằng tay thì sẽ bỏ mất đoạn sau. Chính vì thế ta sẽ dùng đến hook, một công cụ của Angr cho phép ta thay một hay nhiều câu lệnh trong binary bằng một hàm trong python do người dùng viết.</p><p>Cấu trúc lệnh:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=nd>@proj</span><span class=o>.</span><span class=n>hook</span><span class=p>(</span><span class=o>&lt;</span><span class=n>addr</span><span class=o>&gt;</span><span class=p>,</span><span class=n>length</span><span class=o>=&lt;&gt;</span><span class=p>)</span>
+<span class=n>hooker</span><span class=p>(</span><span class=n>state</span><span class=p>):</span> <span class=c1>#hàm được thay</span>
+</code></pre></td></tr></table></div></div><p>Tác dụng như sau: khi chương trình thực thi tới lệnh ở địa chỉ , nó sẽ dừng lại và chạy hàm ( 🙂 ) của chúng ta, sau đó sẽ bỏ qua byte kế tiếp (lưu ý là bỏ n byte chứ không phải bỏ n lệnh)</p><p>Với bài này thì mình muốn chương trình không thực hiện hàm check_equal mà sẽ chạy hàm của mình. Do dó mình nhập tham số addr là địa chỉ ngay chỗ gọi hàm check_equal, length thì có thể mở ida lên là tính được. Vậy giờ chỉ cần quan tâm xem hàm hooker sẽ làm gì thôi.</p><p>Nhìn vào IDA một lần nữa, ta thấy giá trị trả về của hàm check_equal được lưu vào eax. Ok, vậy đây sẽ là hooker của mình</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=nd>@proj</span><span class=o>.</span><span class=n>hook</span><span class=p>(</span><span class=mh>0x080486A9</span><span class=p>,</span><span class=n>length</span><span class=o>=</span><span class=mi>15</span><span class=p>)</span>
+<span class=k>def</span> <span class=nf>hooker</span><span class=p>(</span><span class=n>state</span><span class=p>):</span>
+    <span class=n>passwd_buffer</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=mh>0x0804A054</span><span class=p>,</span><span class=mi>16</span><span class=p>)</span>
+    <span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>eax</span> <span class=o>=</span> <span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>If</span><span class=p>(</span><span class=n>passwd_buffer</span><span class=o>==</span><span class=s2>&#34;XYMKBKUHNIQYNQXE&#34;</span><span class=p>,</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVV</span><span class=p>(</span><span class=mi>1</span><span class=n>statstate</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVV</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>32</span><span class=p>))</span>
+</code></pre></td></tr></table></div></div><p><strong>Note:</strong> Đây là một số điều mình rút ra sau khi viết hàm này:
+– Lệnh state.solver.If(….) thể hiện một mệnh đề if-then-else và nó không tương đương với việc viết</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=k>if</span> <span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>is_true</span><span class=p>(</span><span class=n>passwd_buffer</span><span class=o>==</span><span class=s2>&#34;XYMKBKUHNIQYNQXE&#34;</span><span class=p>):</span>
+   <span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>eax</span><span class=o>=</span><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVV</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>32</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><ul><li>Không thể thay thế <em><strong>state.solver.BVV(1,32)</strong></em> và <em><strong>state.solver.BVV(0,32)</strong></em> bằng 1 và 0 được. Lý do thì mình chưa biết 🙂 (chắc phải nghía qua claripy một chút)</li></ul><h3 id=12_angr_veritesting>12_angr_veritesting</h3><p>Veritesting là một thuật toán dùng để gộp các nhánh rẽ trong luồng thực thi, giúp cho symbolic execution đỡ tốn thời gian hơn. Để enable veritesting thì khi tạo simulation manager, ta chỉ cần:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>simulation</span> <span class=o>=</span> <span class=n>project</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simgr</span><span class=p>(</span><span class=n>initial_state</span><span class=p>,</span> <span class=n>veritesting</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</code></pre></td></tr></table></div></div><p>Bài này thực ra y hệt như bài trên. Tuy nhiên nhờ veritesting gộp nhánh và làm đơn giản hàm nên ta không phải code hàm để hook nữa.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2020-07-07</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../../tags/learning/>learning</a>,&nbsp;<a href=../../../tags/writeup/>writeup</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../../>Home</a></span></section></div><div class=post-nav><a href=../../../posts/old_posts/2020-7-7-aslr/ class=prev rel=prev title="Heap and Address Space Layout Randomization"><i class="fas fa-angle-left fa-fw"></i>Heap and Address Space Layout Randomization</a>
+<a href=../../../posts/old_posts/2020-07-07-angr-basic/ class=next rel=next title="Angr basic">Angr basic<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.85.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../../ target=_blank>Frost</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=../../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../../js/theme.min.js></script></body></html>

@@ -9,7 +9,7 @@ Welcome to my blog!
 
 I am Tien Dung, a.k.a `Frost`.
 
-Currently a CS student at  Chi Minh City University of Technology and a member of team [Efiens](https://blog.efiens.com/team/).
+Currently a CS student at Ho Chi Minh City University of Technology and a member of team [Efiens](https://blog.efiens.com/team/).
 
 My main category is Reverse Engineering.
 

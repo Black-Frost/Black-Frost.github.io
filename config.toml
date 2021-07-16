@@ -8,13 +8,13 @@ relativeURLs = true
 # Change the default theme to be use when building the site with Hugo
 theme = "LoveIt"
 enableRobotsTXT = true
-defaultTheme = "dark"
+
 
 [params]
   # LoveIt theme version
   version = "0.2.X"
   images = ["/images/logo.jpg"]
-  
+  defaultTheme = "dark"
   [params.app]
     # optional site title override for the app when added to an iOS home screen or Android launcher
     title = "LoveIt"

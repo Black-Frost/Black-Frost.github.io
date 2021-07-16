@@ -11,7 +11,7 @@ I am Tien Dung, a.k.a `Frost`.
 
 Currently a CS student at Ho Chi Minh City University of Technology and a member of team [Efiens](https://blog.efiens.com/team/).
 
-My main category is Reverse Engineering.
+My main CTF category is Reverse Engineering.
 
 That's all about me, hope you have a good time on this blog :D.
 

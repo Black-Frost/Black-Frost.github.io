@@ -8,6 +8,7 @@ relativeURLs = true
 # Change the default theme to be use when building the site with Hugo
 theme = "LoveIt"
 enableRobotsTXT = true
+defaultTheme = "dark"
 
 [params]
   # LoveIt theme version

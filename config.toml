@@ -68,9 +68,9 @@ enableRobotsTXT = true
       social = true
 
   [params.social]
-    GitHub = "https://github.com/Black-Frost"
-    Facebook = "https://www.facebook.com/tiendung.vovan.940/"
-    Twitter = "https://twitter.com/Fr0st1706"
+    GitHub = "Black-Frost"
+    Facebook = "tiendung.vovan.940"
+    Twitter = "Fr0st1706"
 
 
 [menu]

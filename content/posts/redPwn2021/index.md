@@ -33,7 +33,7 @@ Luckily, we don't have to parse those opcodes by hand. Python has a built-in mod
 pickletools.dis(b'(I128\nI4\nI99\nI112\nI105\nI99... #truncated )
 ```
 
-```
+```bash
 /*...*/
 544203: I        INT        73
 544207: I        INT        54
@@ -74,7 +74,7 @@ for op in pickletools.genops(code):
 pickletools.dis(bytes(tup))
 ```
 
-```
+```bash
    13: (    MARK
    14: \x8c     SHORT_BINUNICODE 'pickledhorseradish'
    34: C        SHORT_BINBYTES b'\x80\x04cpickle\nio\ncio\npickledmacadamia.__add__\ncio\npickledbarberry\n\x85R.'
@@ -100,7 +100,7 @@ pickletools.dis(bytes(tup))
 ```
 
 Now it builds a `dict`, with entry `pickledximenia` contains our input, `pickledpupunha` contains the tuple `("Nope!", "Correct!")`, `pickledgarlic` contains the tuple `('pickledcorneliancherry', 'pickledboysenberry')` and the rest are just opcodes. After that, we can see there are many function calls.
-```
+```bash
 119722: b    BUILD
 119723: c    GLOBAL     'builtins print'
 119739: c    GLOBAL     'io pickledpupunha.__getitem__'
@@ -131,7 +131,7 @@ We want the program to print `Correct!`, so the input has to be 64-char long. On
 
 Repeating the process above, we can get the disassembled code for `pickledboysenberry`. This function constructs even more pickle opcodes, which will be used to check our input. Again, using `pickletools.genops()` and `pickletools.dis()`, we can extract those opcodes. Those functions are fairly simple. We have `pickledblackapple` to check if each character is in the range from 32 to 127. The rest of the functions follow the same pattern: push every char of input to stack, pop them out one by one and save the chars it needs, then finally perform an arithmetic check. For example, this is a checking function: `pickledgalendar`
 
-```
+```bash
 /*...*/
   253: 0    POP
   254: 0    POP
@@ -316,7 +316,7 @@ while rip < len(opcodes):
 
 ### Solving using z3:
 Thanks to the disassembler, we can now understand what `prog.bin` is trying to do.
-```
+```bash
 0:		PUT		12
 3:		JMP
 4:		PUT		1

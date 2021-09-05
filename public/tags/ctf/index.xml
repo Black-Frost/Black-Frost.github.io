@@ -1,0 +1,28 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>ctf - Tag - Frost&#39;s blog</title>
+        <link>/tags/ctf/</link>
+        <description>ctf - Tag - Frost&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 20 Jul 2021 00:20:45 &#43;0700</lastBuildDate><atom:link href="/tags/ctf/" rel="self" type="application/rss+xml" /><item>
+    <title>[Google CTF 2021] weather writeup</title>
+    <link>/posts/googlectf_2021/</link>
+    <pubDate>Tue, 20 Jul 2021 00:20:45 &#43;0700</pubDate>
+    <author>Author</author>
+    <guid>/posts/googlectf_2021/</guid>
+    <description><![CDATA[Writeup for weather challenge of Google CTF 2021]]></description>
+</item><item>
+    <title>[redpwnCTF2021] pickled-onions, 2k writeups</title>
+    <link>/posts/redpwn2021/</link>
+    <pubDate>Wed, 14 Jul 2021 20:54:37 &#43;0700</pubDate>
+    <author>Author</author>
+    <guid>/posts/redpwn2021/</guid>
+    <description><![CDATA[Writeup for redpwnCTF 2021]]></description>
+</item><item>
+    <title>Flareon 6 - challenge 7 (Wopr) solving log</title>
+    <link>/posts/old_posts/2021-06-19-flareon6-chall7-log/</link>
+    <pubDate>Sat, 19 Jun 2021 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>/posts/old_posts/2021-06-19-flareon6-chall7-log/</guid>
+    <description><![CDATA[So because of my laziness, this blog has beed collecting dust for almost a year now. And since I&rsquo;m solving some Flareon challenges from the last years, I figure it would be a good time to post some write up. But I&rsquo;m too lazy to write a proper writeup (and also there are so many writeups of those challs already), I&rsquo;m just gonna post a log of the things I did solving the challenge so that I can look back at it later when I need to.]]></description>
+</item></channel>
+</rss>

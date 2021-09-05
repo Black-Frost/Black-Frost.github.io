@@ -41,7 +41,7 @@ It turns out that the program also starts a second thread.
 ```cs
 <Module>.CreateThread(null, 0UL, <Module>.__unep@?BackgroundInitialize@@$$FYAKPEAX@Z, null, 0, null);
 ```
-But the name of the start function for the thread is a little bit weird, and we can't see its content in Dnspy. That's because this is not managed code. To put it simply, in .NET, managed codes are compiled into IL opcode, then get executed by .NET CLR, while unmanaged codes (or unsafe code) are compiled directly into machine code and handled by the OS itself. And since this function contains managed code, we have to use a tool that can disassemble machine code to view its content.
+But the name of the start function for the thread is a little bit weird, and we can't see its content in Dnspy. That's because this is not managed code. To put it simply, in .NET, managed codes are compiled into IL opcode, then get executed by .NET CLR, while unmanaged codes (or unsafe code) are compiled directly into machine code and handled by the OS itself. And since this function contains unmanaged code, we have to use a tool that can disassemble machine code to view its content.
 
 If we click the function name in Dnspy, we can find out that the RVA of the function inside this binary is `0xB648`. So I loaded the file into IDA, jumped to that address, and was able to see the content of our function.
 

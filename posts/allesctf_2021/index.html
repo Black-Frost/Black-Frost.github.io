@@ -1,0 +1,403 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>[AllesCTF2021] Monstrosity writeup - Frost's blog</title><meta name=Description content><meta property="og:title" content="[AllesCTF2021] Monstrosity writeup">
+<meta property="og:description" content="Writeup for AllesCTF 2021">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/allesctf_2021/"><meta property="og:image" content="/images/logo.jpg"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-09-05T00:08:06+07:00">
+<meta property="article:modified_time" content="2021-09-05T00:08:06+07:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="/images/logo.jpg">
+<meta name=twitter:title content="[AllesCTF2021] Monstrosity writeup">
+<meta name=twitter:description content="Writeup for AllesCTF 2021">
+<meta name=application-name content="LoveIt">
+<meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=../../favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../apple-touch-icon.png><link rel=manifest href=../../site.webmanifest><link rel=canonical href=../../posts/allesctf_2021/><link rel=prev href=../../posts/redpwn2021/><link rel=stylesheet href=../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../css/style.min.css><link rel=stylesheet href=../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"[AllesCTF2021] Monstrosity writeup","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/allesctf_2021\/"},"genre":"posts","keywords":"ctf, writeup","wordcount":1491,"url":"\/posts\/allesctf_2021\/","datePublished":"2021-09-05T00:08:06+07:00","dateModified":"2021-09-05T00:08:06+07:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head>
+<body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'dark'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'dark'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=../../ title="Frost's blog"><img class="lazyload logo" src=../../svg/loading.min.svg data-src=../../images/logo.jpg data-srcset="../../images/logo.jpg, ../../images/logo.jpg 1.5x, ../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=../../posts/> Posts </a><a class=menu-item href=../../tags/> Tags </a><a class=menu-item href=../../about/> About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=../../ title="Frost's blog"><img class="lazyload logo" src=../../svg/loading.min.svg data-src=../../images/logo.jpg data-srcset="../../images/logo.jpg, ../../images/logo.jpg 1.5x, ../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><a class=menu-item href=../../posts/ title>Posts</a><a class=menu-item href=../../tags/ title>Tags</a><a class=menu-item href=../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">[AllesCTF2021] Monstrosity writeup</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-09-05>2021-09-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1491 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#locating-and-analyzing-the-main-function>Locating and analyzing the main function:</a></li>
+<li><a href=#analyzing-the-dll>Analyzing the dll:</a></li>
+<li><a href=#identifying-jit-hook>Identifying JIT hook:</a></li>
+<li><a href=#constructing-the-solution>Constructing the solution:</a></li>
+</ul>
+</nav></div>
+</div><div class=content id=content><div class="details admonition info open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-info-circle fa-fw"></i>Given file<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content><a href=../../posts/allesctf_2021/Monstrosity.exe rel>Monstrosity.exe</a></div>
+</div>
+</div>
+<h2 id=locating-and-analyzing-the-main-function>Locating and analyzing the main function:</h2>
+<p>We are given an exe file. Using <code>Detect-it-easy</code>, we know that this is a .NET binary. My go-to tool for such binaries is Dnspy, so obviously, I put the file in there. But with such a huge number of functions in the binary, it&rsquo;s really hard to figure out where to start. If you are using Dnspy, you can search for a function by its name by pressing <code>Ctrl + Shift + K</code>. Just type the word <code>main</code> in there and we can locate our main function.</p>
+<div class="details admonition note open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>I only knew that this binary has a <code>main</code> function by loading it into IDA. This is because IDA automatically takes you to the entry point, while DnSpy doesn&rsquo;t.</div>
+</div>
+</div>
+<div class="details admonition tip open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-lightbulb fa-fw"></i>Tips<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>Right-click on the binary name and choose <code>Go to Entry Point</code> in Dnspy will take you to its entry point. With this binary, the entry point is at the <code>mainCRTStartupStrArray</code> function, and you can see <code>main</code> is called there.</div>
+</div>
+</div>
+<p>The <code>main</code> function first load a binary resource using <code>GetByteResourceContent()</code>. Taking a look at the resource section using <code>CFF explorer</code>, we can quickly spot an embed dll file (Let&rsquo;s just dump that out, it will be useful later). The program then goes on to create an instance of class <code>Maze.Maze</code> and call the method <code>Maze.MazeWalker.startWalking()</code> of the hidden dll.</p>
+<h2 id=analyzing-the-dll>Analyzing the dll:</h2>
+<p>This dll is pretty straightforward. It has the <code>Maze</code> class, which is used to represent our maze. Each cell in this maze is represented by a number of type <code>CellState</code>. This number indicates which direction we can&rsquo;t go to from that cell. The whole maze is created randomly using the current timestamp as a seed.</p>
+<p>The <code>MazeWalker</code> class is where our input gets processed. It has 100 functions, one for each cell in the maze. The structure of those functions are as following</p>
+<ul>
+<li>Check if the last move is valid or not using the <code>CellState</code> value. In other words, it makes sure that we didn&rsquo;t hit a wall.</li>
+<li>Get the key pressed and transfer control to another function, a.k.a move to another cell. <code>w</code>, <code>s</code>, <code>a</code>, <code>d</code> are used to move up, down, left, right respectively.</li>
+<li>If we move out of the boundary of the maze, the program will print out some messages and quit immediately.</li>
+<li>The handler for cell <code>(9, 9)</code>, which is <code>visitField_9_9</code> will check if all our moves from the very start are valid. The sequence of input to create the shortest valid path to <code>(9,9)</code> is our flag.</li>
+</ul>
+<p>This made me confused for a while. If the maze is random, then how can the content of the flag be the same for every run? Moreover, some input keys don&rsquo;t work as I expected. For example, when we start out at <code>(0, 0)</code>, if we go up by pressing <code>w</code>, the program is supposed to print the out-of-bound message, but it didn&rsquo;t. At this point, I suspected that the code is somehow changed at runtime, so I returned to <code>main</code> to check if I missed something.</p>
+<h2 id=identifying-jit-hook>Identifying JIT hook:</h2>
+<p>It turns out that the program also starts a second thread.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cs data-lang=cs><span class=p>&lt;</span><span class=n>Module</span><span class=p>&gt;.</span><span class=n>CreateThread</span><span class=p>(</span><span class=k>null</span><span class=p>,</span> <span class=m>0</span><span class=n>UL</span><span class=p>,</span> <span class=p>&lt;</span><span class=n>Module</span><span class=p>&gt;.</span><span class=m>__</span><span class=n>unep</span><span class=err>@</span><span class=p>?</span><span class=n>BackgroundInitialize</span><span class=err>@@$$</span><span class=n>FYAKPEAX@Z</span><span class=p>,</span> <span class=k>null</span><span class=p>,</span> <span class=m>0</span><span class=p>,</span> <span class=k>null</span><span class=p>);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>But the name of the start function for the thread is a little bit weird, and we can&rsquo;t see its content in Dnspy. That&rsquo;s because this is not managed code. To put it simply, in .NET, managed codes are compiled into IL opcode, then get executed by .NET CLR, while unmanaged codes (or unsafe code) are compiled directly into machine code and handled by the OS itself. And since this function contains managed code, we have to use a tool that can disassemble machine code to view its content.</p>
+<p>If we click the function name in Dnspy, we can find out that the RVA of the function inside this binary is <code>0xB648</code>. So I loaded the file into IDA, jumped to that address, and was able to see the content of our function.</p>
+<div class="details admonition tip open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-lightbulb fa-fw"></i>Tips<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>IDA offers you 2 ways to load the file, either as a .NET assembly or a native PE executable. You must choose the native PE option if you want to see the unmanaged code.</div>
+</div>
+</div>
+<p>The function contains 2 statements that caught my attention.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=n>v0</span> <span class=o>=</span> <span class=n>j_GetModuleHandleA</span><span class=p>(</span><span class=s>&#34;Clrjit.dll&#34;</span><span class=p>);</span>
+<span class=n>v1</span> <span class=o>=</span> <span class=n>j_GetProcAddress</span><span class=p>(</span><span class=n>v0</span><span class=p>,</span> <span class=s>&#34;getJit&#34;</span><span class=p>);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This is the classic <a href=https://georgeplotnikov.github.io/articles/just-in-time-hooking.html target=_blank rel="noopener noreffer">JIT hooking technique</a>. As you know, .NET IL opcodes are compiled to machine code at runtime, so by hooking the function that handles this compilation process, we can modify our code while the program is running.</p>
+<p>The hook is located at <code>0x1950</code>. It identifies the needed methods by their <em>metadata token</em>, then changes their opcodes.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=k>if</span> <span class=p>(</span> <span class=n>_md_token</span> <span class=o>==</span> <span class=mh>0x6000007</span> <span class=p>)</span>
+<span class=p>{</span>
+    <span class=n>j_VirtualProtect</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=mi>6u</span><span class=n>i64</span><span class=p>,</span> <span class=mh>0x40u</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>flOldProtect</span><span class=p>);</span>
+    <span class=n>v13</span> <span class=o>=</span> <span class=mi>6</span><span class=n>i64</span><span class=p>;</span>
+    <span class=n>v14</span> <span class=o>=</span> <span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
+    <span class=o>*</span><span class=n>v14</span> <span class=o>=</span> <span class=mh>0x53920</span><span class=p>;</span>
+    <span class=o>*</span><span class=p>(</span><span class=n>v14</span> <span class=o>+</span> <span class=mi>4</span><span class=p>)</span> <span class=o>=</span> <span class=mh>0x2A00</span><span class=p>;</span>
+<span class=nl>LABEL_7</span><span class=p>:</span>
+    <span class=n>j_VirtualProtect</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=n>v13</span><span class=p>,</span> <span class=mi>4u</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>flOldProtect</span><span class=p>);</span>
+    <span class=k>return</span> <span class=nf>old_Jit</span><span class=p>(</span><span class=n>v10</span><span class=p>,</span> <span class=n>v9</span><span class=p>,</span> <span class=n>v8</span><span class=p>,</span> <span class=n>v7</span><span class=p>,</span> <span class=n>a5</span><span class=p>,</span> <span class=n>a6</span><span class=p>);</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="details admonition note open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>I recognized the metadata token because I&rsquo;ve encountered this kind of challenge once before. You can look into it a little bit more to see how the program retrieves the metadata tokens.</div>
+</div>
+</div>
+<p><code>v8</code> is a pointer to <a href=https://github.com/xoofx/ManagedJit/blob/master/ManagedJit/ManagedJit.cs#L409 target=_blank rel="noopener noreffer">CORINFO_METHOD_INFO</a> structure, so<code>v8[2]</code> is actually pointing at the method&rsquo;s IL opcode. Knowing this, we can manually patch the code ourselves. <code>0x6000007</code> is the token of <code>Maze.GetRandomSeed()</code>, and the result after patching is:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cs data-lang=cs><span class=k>public</span> <span class=k>static</span> <span class=kt>int</span> <span class=n>GetRandomSeed</span><span class=p>()</span>
+<span class=p>{</span>
+	<span class=k>return</span> <span class=m>1337</span><span class=p>;</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>So the maze is not random. Great, we only need to solve 1 maze to get the flag.</p>
+<p>The next modification we need to look at is this:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp> <span class=k>if</span> <span class=p>(</span> <span class=p>(</span><span class=n>_md_token</span> <span class=o>-</span> <span class=mh>0x6000010</span><span class=p>)</span> <span class=o>&lt;=</span> <span class=mh>0x62</span> <span class=p>)</span>
+  <span class=p>{</span>
+    <span class=n>j_VirtualProtect</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span> <span class=o>*</span><span class=p>(</span><span class=n>v8</span> <span class=o>+</span> <span class=mi>6</span><span class=p>),</span> <span class=mh>0x40u</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>flOldProtect</span><span class=p>);</span>
+    <span class=o>*</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>+</span> <span class=mi>21</span><span class=n>i64</span><span class=p>)</span> <span class=o>=</span> <span class=n>aAbcdefghijklmn</span><span class=p>[(</span><span class=n>md_token</span> <span class=o>+</span> <span class=mi>13</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1Au</span><span class=p>];</span>
+    <span class=o>*</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>+</span> <span class=mi>70</span><span class=n>i64</span><span class=p>)</span> <span class=o>=</span> <span class=n>aAbcdefghijklmn</span><span class=p>[(</span><span class=n>md_token</span> <span class=o>+</span> <span class=mi>43</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1Au</span><span class=p>];</span>
+    <span class=o>*</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>+</span> <span class=mi>119</span><span class=n>i64</span><span class=p>)</span> <span class=o>=</span> <span class=n>aAbcdefghijklmn</span><span class=p>[(</span><span class=n>md_token</span> <span class=o>+</span> <span class=mi>57</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1Au</span><span class=p>];</span>
+    <span class=o>*</span><span class=p>(</span><span class=n>v8</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>+</span> <span class=mi>167</span><span class=n>i64</span><span class=p>)</span> <span class=o>=</span> <span class=n>aAbcdefghijklmn</span><span class=p>[(</span><span class=n>md_token</span> <span class=o>+</span> <span class=mi>24</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1Au</span><span class=p>];</span>
+    <span class=n>v13</span> <span class=o>=</span> <span class=o>*</span><span class=p>(</span><span class=n>v8</span> <span class=o>+</span> <span class=mi>6</span><span class=p>);</span>
+    <span class=k>goto</span> <span class=n>LABEL_7</span><span class=p>;</span>
+  <span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This is the reason why we get weird behaviors from our input. The hook actually modifies all the action keys for each cell handling method (you can see this by checking the metadata and the patch offset). But that&rsquo;s fine, we can easily calculate the correct keys for every direction.</p>
+<h2 id=constructing-the-solution>Constructing the solution:</h2>
+<p>So now, there are 3 things we need to do:</p>
+<ul>
+<li>Get the content of the maze.</li>
+<li>Get the shortest path to solve the maze</li>
+<li>Calculate the correct key sequence for that path.</li>
+</ul>
+<p>Since the maze is not randomly created, we can just debug the program and dump its content using Dnspy.</p>
+<p>Next, we need to solve this maze using the shortest path possible. The best option that I came up with was using <code>Breath First Search</code>.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>TOP</span> <span class=o>=</span> <span class=mi>1</span>
+<span class=n>RIGHT</span> <span class=o>=</span> <span class=mi>2</span> 
+<span class=n>BOTTOM</span> <span class=o>=</span> <span class=mi>4</span>
+<span class=n>LEFT</span> <span class=o>=</span> <span class=mi>8</span>
+<span class=k>def</span> <span class=nf>maze_walk</span><span class=p>(</span><span class=n>maze</span><span class=p>,</span> <span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>):</span>
+    <span class=n>visited</span> <span class=o>=</span> <span class=p>[[</span><span class=mi>0</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>)]</span> <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>)]</span>
+    <span class=n>queue</span> <span class=o>=</span> <span class=p>[]</span>
+    <span class=n>queue</span><span class=o>.</span><span class=n>append</span><span class=p>([(</span><span class=n>x0</span><span class=p>,</span><span class=n>y0</span><span class=p>)])</span>
+    <span class=k>while</span> <span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>queue</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>0</span><span class=p>):</span>
+        <span class=n>path</span> <span class=o>=</span> <span class=n>queue</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+        <span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span> <span class=o>=</span> <span class=n>path</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+        <span class=n>visited</span><span class=p>[</span><span class=n>x</span><span class=p>][</span><span class=n>y</span><span class=p>]</span> <span class=o>=</span> <span class=kc>True</span>
+        <span class=k>if</span> <span class=p>(</span><span class=n>x</span> <span class=o>==</span> <span class=mi>9</span> <span class=ow>and</span> <span class=n>y</span> <span class=o>==</span> <span class=mi>9</span><span class=p>):</span>
+            <span class=k>return</span> <span class=n>path</span>
+        <span class=n>status</span> <span class=o>=</span> <span class=n>maze</span><span class=p>[</span><span class=n>x</span><span class=p>][</span><span class=n>y</span><span class=p>]</span>
+        <span class=n>neighbor</span> <span class=o>=</span> <span class=p>[]</span>
+        <span class=k>if</span> <span class=ow>not</span> <span class=p>(</span><span class=n>status</span> <span class=o>&amp;</span> <span class=n>TOP</span><span class=p>)</span> <span class=ow>and</span> <span class=n>y</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+            <span class=n>neighbor</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>-</span><span class=mi>1</span><span class=p>))</span>
+        <span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=p>(</span><span class=n>status</span> <span class=o>&amp;</span> <span class=n>BOTTOM</span><span class=p>)</span> <span class=ow>and</span> <span class=n>y</span> <span class=o>&lt;</span> <span class=mi>9</span><span class=p>):</span>
+            <span class=n>neighbor</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>x</span><span class=p>,</span> <span class=n>y</span> <span class=o>+</span> <span class=mi>1</span><span class=p>))</span>
+        <span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=p>(</span><span class=n>status</span> <span class=o>&amp;</span> <span class=n>LEFT</span><span class=p>)</span> <span class=ow>and</span> <span class=n>x</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>):</span>
+            <span class=n>neighbor</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>x</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=n>y</span><span class=p>))</span>
+        <span class=k>if</span> <span class=p>(</span><span class=ow>not</span> <span class=p>(</span><span class=n>status</span> <span class=o>&amp;</span> <span class=n>RIGHT</span><span class=p>)</span> <span class=ow>and</span> <span class=n>x</span> <span class=o>&lt;</span> <span class=mi>9</span><span class=p>):</span>
+            <span class=n>neighbor</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>x</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>y</span><span class=p>))</span>
+        <span class=c1>#print(neighbor)</span>
+        <span class=n>new_path</span> <span class=o>=</span> <span class=p>[</span><span class=n>path</span> <span class=o>+</span> <span class=p>[(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)]</span> <span class=k>for</span> <span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span> <span class=ow>in</span> <span class=n>neighbor</span> <span class=k>if</span> <span class=ow>not</span> <span class=n>visited</span><span class=p>[</span><span class=n>x</span><span class=p>][</span><span class=n>y</span><span class=p>]]</span>
+        <span class=n>queue</span> <span class=o>+=</span> <span class=n>new_path</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;WRONG&#34;</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Finally, we need the sequence of keys. Since the direction keys for each method are calculated from its metadata token, we first have to get all the tokens of those handlers. Luckily, the tokens follow a specific pattern, so we can just calculate them.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>):</span>
+    <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>):</span>
+        <span class=n>md_token</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>j</span><span class=p>]</span> <span class=o>=</span> <span class=mh>0x10</span> <span class=o>+</span> <span class=mi>10</span><span class=o>*</span><span class=n>j</span> <span class=o>+</span> <span class=n>i</span>
+
+<span class=k>def</span> <span class=nf>get_code</span><span class=p>(</span><span class=n>token</span><span class=p>):</span>
+    <span class=n>code</span> <span class=o>=</span> <span class=p>{}</span>
+    <span class=n>code</span><span class=p>[</span><span class=s2>&#34;w&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nb>chr</span><span class=p>(</span><span class=nb>ord</span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=p>(</span><span class=n>token</span> <span class=o>+</span> <span class=mi>13</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>)</span>
+    <span class=n>code</span><span class=p>[</span><span class=s2>&#34;a&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nb>chr</span><span class=p>(</span><span class=nb>ord</span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=p>(</span><span class=n>token</span> <span class=o>+</span> <span class=mi>43</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>)</span>
+    <span class=n>code</span><span class=p>[</span><span class=s2>&#34;s&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nb>chr</span><span class=p>(</span><span class=nb>ord</span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=p>(</span><span class=n>token</span> <span class=o>+</span> <span class=mi>57</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>)</span>
+    <span class=n>code</span><span class=p>[</span><span class=s2>&#34;d&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nb>chr</span><span class=p>(</span><span class=nb>ord</span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>)</span> <span class=o>+</span> <span class=p>(</span><span class=n>token</span> <span class=o>+</span> <span class=mi>24</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>code</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Finally, putting it all together</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>sol</span> <span class=o>=</span> <span class=n>maze_walk</span><span class=p>(</span><span class=n>maze</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+<span class=n>flag</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span>
+<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>sol</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>):</span>
+    <span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span> <span class=o>=</span> <span class=n>sol</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+    <span class=p>(</span><span class=n>x1</span><span class=p>,</span><span class=n>y1</span><span class=p>)</span> <span class=o>=</span> <span class=n>sol</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>]</span>
+    <span class=n>code</span> <span class=o>=</span> <span class=n>get_code</span><span class=p>(</span><span class=n>md_token</span><span class=p>[</span><span class=n>x</span><span class=p>][</span><span class=n>y</span><span class=p>])</span>
+    
+    <span class=k>if</span> <span class=n>x1</span> <span class=o>&lt;</span> <span class=n>x</span><span class=p>:</span>  <span class=c1>#Left</span>
+        <span class=n>flag</span> <span class=o>+=</span> <span class=n>code</span><span class=p>[</span><span class=s2>&#34;a&#34;</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>x1</span> <span class=o>&gt;</span> <span class=n>x</span><span class=p>:</span> <span class=c1>#Right</span>
+        <span class=n>flag</span> <span class=o>+=</span> <span class=n>code</span><span class=p>[</span><span class=s2>&#34;d&#34;</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>y1</span> <span class=o>&gt;</span> <span class=n>y</span><span class=p>:</span> <span class=c1>#Down</span>
+        <span class=n>flag</span> <span class=o>+=</span> <span class=n>code</span><span class=p>[</span><span class=s2>&#34;s&#34;</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>y1</span> <span class=o>&lt;</span> <span class=n>y</span><span class=p>:</span> <span class=c1>#Up</span>
+        <span class=n>flag</span> <span class=o>+=</span> <span class=n>code</span><span class=p>[</span><span class=s2>&#34;w&#34;</span><span class=p>]</span>
+<span class=nb>print</span><span class=p>(</span><span class=s2>&#34;ALLES!{</span><span class=si>%s</span><span class=s2>}&#34;</span><span class=o>%</span><span class=n>flag</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And we have the flag: <code>ALLES!{vfpzjtwmcdlvygjzabcsmlkjefgwmndxwrstucmwzhrucylowsfi}</code></p>
+<p>Embed dll: <a href=../../posts/allesctf_2021/Maze.dll rel>Maze.dll</a></p>
+<p>Full script: <a href=../../posts/allesctf_2021/maze_solve.py rel>maze_solve.py</a>, <a href=../../posts/allesctf_2021/maze.bin rel>maze.bin</a></p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-05</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../tags/ctf/>ctf</a>,&nbsp;<a href=../../tags/writeup/>writeup</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=../../posts/redpwn2021/ class=prev rel=prev title="[redpwnCTF2021] pickled-onions, 2k writeups"><i class="fas fa-angle-left fa-fw"></i>[redpwnCTF2021] pickled-onions, 2k writeups</a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../ target=_blank>Frost</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><script type=text/javascript src=../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../js/theme.min.js></script></body>
+</html>

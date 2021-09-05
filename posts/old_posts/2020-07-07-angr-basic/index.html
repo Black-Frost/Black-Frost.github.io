@@ -1,70 +1,307 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Angr basic - Frost's blog</title><meta name=Description content><meta property="og:title" content="Angr basic"><meta property="og:description" content="Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (https://github.com/jakespringer/angr_ctf). Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!
-Top Level Interfaces Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn."><meta property="og:type" content="article"><meta property="og:url" content="/posts/old_posts/2020-07-07-angr-basic/"><meta property="og:image" content="/images/logo.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-07-07T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-07T00:00:00+00:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="/images/logo.jpg"><meta name=twitter:title content="Angr basic"><meta name=twitter:description content="Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (https://github.com/jakespringer/angr_ctf). Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!
-Top Level Interfaces Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn."><meta name=application-name content="LoveIt"><meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico><link rel=icon type=image/png sizes=32x32 href=../../../favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=../../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../../apple-touch-icon.png><link rel=manifest href=../../../site.webmanifest><link rel=canonical href=../../../posts/old_posts/2020-07-07-angr-basic/><link rel=prev href=../../../posts/old_posts/2020-07-07-angr-ctf/><link rel=next href=../../../posts/old_posts/2020-07-07-angstrom-2020/><link rel=stylesheet href=../../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../../css/style.min.css><link rel=stylesheet href=../../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Angr basic","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/old_posts\/2020-07-07-angr-basic\/"},"genre":"posts","keywords":"learning","wordcount":1178,"url":"\/posts\/old_posts\/2020-07-07-angr-basic\/","datePublished":"2020-07-07T00:00:00+00:00","dateModified":"2020-07-07T00:00:00+00:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'dark'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'dark'==='dark')&&document.body.setAttribute('theme','dark')</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu><div class=menu-inner><a class=menu-item href=../../../posts/>Posts </a><a class=menu-item href=../../../tags/>Tags </a><a class=menu-item href=../../../about/>About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=../../../posts/ title>Posts</a><a class=menu-item href=../../../tags/ title>Tags</a><a class=menu-item href=../../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Angr basic</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=../../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-07-07>2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1178 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#top-level-interfaces>Top Level Interfaces</a></li><li><a href=#loader>Loader</a></li><li><a href=#the-factory>The factory</a><ul><li></li><li><a href=#symbolic-execution>Symbolic Execution</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (<a href=https://github.com/jakespringer/angr_ctf)>https://github.com/jakespringer/angr_ctf)</a>. Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!</p><h2 id=top-level-interfaces>Top Level Interfaces</h2><p>Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn.
-Ta dùng lệnh Project để load binary này:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Angr basic - Frost's blog</title><meta name=Description content><meta property="og:title" content="Angr basic">
+<meta property="og:description" content="Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (https://github.com/jakespringer/angr_ctf). Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!
+Top Level Interfaces Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="/posts/old_posts/2020-07-07-angr-basic/"><meta property="og:image" content="/images/logo.jpg"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-07-07T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-07-07T00:00:00+00:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="/images/logo.jpg">
+<meta name=twitter:title content="Angr basic">
+<meta name=twitter:description content="Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (https://github.com/jakespringer/angr_ctf). Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!
+Top Level Interfaces Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn.">
+<meta name=application-name content="LoveIt">
+<meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=../../../favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=../../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../../apple-touch-icon.png><link rel=manifest href=../../../site.webmanifest><link rel=canonical href=../../../posts/old_posts/2020-07-07-angr-basic/><link rel=prev href=../../../posts/old_posts/2020-07-07-angr-ctf/><link rel=next href=../../../posts/old_posts/2020-07-07-angstrom-2020/><link rel=stylesheet href=../../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../../css/style.min.css><link rel=stylesheet href=../../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Angr basic","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/old_posts\/2020-07-07-angr-basic\/"},"genre":"posts","keywords":"learning","wordcount":1178,"url":"\/posts\/old_posts\/2020-07-07-angr-basic\/","datePublished":"2020-07-07T00:00:00+00:00","dateModified":"2020-07-07T00:00:00+00:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head>
+<body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'dark'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'dark'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=../../../posts/> Posts </a><a class=menu-item href=../../../tags/> Tags </a><a class=menu-item href=../../../about/> About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><a class=menu-item href=../../../posts/ title>Posts</a><a class=menu-item href=../../../tags/ title>Tags</a><a class=menu-item href=../../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Angr basic</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=../../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-07-07>2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1178 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#top-level-interfaces>Top Level Interfaces</a></li>
+<li><a href=#loader>Loader</a></li>
+<li><a href=#the-factory>The factory</a>
+<ul>
+<li></li>
+<li><a href=#symbolic-execution>Symbolic Execution</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>Tuần này mình sẽ bắt đầu học về Angr, việc mà đáng lẽ phải làm từ tuần trước 🙂 . Mục tiêu lần này là trong 3 ngày phải nhớ được một số lệnh và dùng Angr để giải được vài bài trong (<a href=https://github.com/jakespringer/angr_ctf%29 target=_blank rel="noopener noreffer">https://github.com/jakespringer/angr_ctf)</a>. Tốn mất 1 tuần học hành không hiệu quả rồi, chấn chỉnh lại nào!</p>
+<h2 id=top-level-interfaces>Top Level Interfaces</h2>
+<p>Sẵn có angr_ctf, mình sẽ lấy bài “00_angr_find” để làm ví dụ luôn.
+Ta dùng lệnh Project để load binary này:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>angr</span>
 <span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./00_angr_find&#34;</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Lệnh Project ở trên sẽ tự động load luôn cả các thư viện được link với binary, nếu không muốn điều này xảy ra thì ta có thể dùng</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./00_angr_find&#34;</span><span class=p>,</span><span class=n>auto_load_libs</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Trong document có chỉ một số lệnh cơ bản, sẵn tiện nghía qua chút luôn 😀</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic1.png data-srcset="../assets/img/angr_basic/angr_basic1.png, ../assets/img/angr_basic/angr_basic1.png 1.5x, ../assets/img/angr_basic/angr_basic1.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic1.png title=../assets/img/angr_basic/angr_basic1.png></p><p>3 lệnh trên khá dễ hiểu, chúng lần lượt dùng để xem arch, entry point và tên của binary (Note: LE trong hình là Little Edian).</p><hr><h2 id=loader>Loader</h2><p>Loader của Angr có chức năng là load binary vào vùng địa chỉ ảo</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic2.png data-srcset="../assets/img/angr_basic/angr_basic2.png, ../assets/img/angr_basic/angr_basic2.png 1.5x, ../assets/img/angr_basic/angr_basic2.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic2.png title=../assets/img/angr_basic/angr_basic2.png></p><p>Ta cũng có thể dùng “shared_objects” và “main_object” để xem một số thông tin của các thư viện và binary “chính” mà Angr load vào</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic3.png data-srcset="../assets/img/angr_basic/angr_basic3.png, ../assets/img/angr_basic/angr_basic3.png 1.5x, ../assets/img/angr_basic/angr_basic3.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic3.png title=../assets/img/angr_basic/angr_basic3.png></p><p>Trong document có hướng dẫn một số lệnh khác như:</p><ul><li>“proj.loader.min_addr” và “proj.loader.max_addr” dùng để xem địa chỉ cao nhất và thấp nhất.</li><li>proj.main_object.execstack : kiểm tra xem bit nx có được bật không.</li><li>proj.main_object.pic : kiểm tra xem binary có phải là position independent code (PIC) hay không.</li></ul><hr><h2 id=the-factory>The factory</h2><p>Đây là chỗ tập hợp các object thường dùng của Angr, ví dụ như là</p><h4 id=blocks>Blocks</h4><p>Block là tập hợp các câu lệnh được thực hiện tuần tự, không rẽ nhánh. Để dễ hình dung hơn thì trong IDA, một khối như này chứa một block.</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic4.png data-srcset="../assets/img/angr_basic/angr_basic4.png, ../assets/img/angr_basic/angr_basic4.png 1.5x, ../assets/img/angr_basic/angr_basic4.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic4.png title=../assets/img/angr_basic/angr_basic4.png></p><p>Để có một block tại một địa chỉ nào đó (giả sử là ở entry point đi), ta dùng:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>block</span><span class=p>(</span><span class=n>proj</span><span class=o>.</span><span class=n>entry</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Câu lệnh trên sẽ trả về một Block object, mang những thông tin về block tại địa chỉ mong muốn. Ta có thể lưu object này vào biến và sử dụng những lệnh khác để phân tích tiếp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</code></pre></td></tr></table>
+</div>
+</div><p>Lệnh Project ở trên sẽ tự động load luôn cả các thư viện được link với binary, nếu không muốn điều này xảy ra thì ta có thể dùng</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>proj</span><span class=o>=</span><span class=n>angr</span><span class=o>.</span><span class=n>Project</span><span class=p>(</span><span class=s2>&#34;./00_angr_find&#34;</span><span class=p>,</span><span class=n>auto_load_libs</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Trong document có chỉ một số lệnh cơ bản, sẵn tiện nghía qua chút luôn 😀</p>
+<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic1.png data-srcset="../assets/img/angr_basic/angr_basic1.png, ../assets/img/angr_basic/angr_basic1.png 1.5x, ../assets/img/angr_basic/angr_basic1.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic1.png title=../assets/img/angr_basic/angr_basic1.png></p>
+<p>3 lệnh trên khá dễ hiểu, chúng lần lượt dùng để xem arch, entry point và tên của binary (Note: LE trong hình là Little Edian).</p>
+<hr>
+<h2 id=loader>Loader</h2>
+<p>Loader của Angr có chức năng là load binary vào vùng địa chỉ ảo</p>
+<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic2.png data-srcset="../assets/img/angr_basic/angr_basic2.png, ../assets/img/angr_basic/angr_basic2.png 1.5x, ../assets/img/angr_basic/angr_basic2.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic2.png title=../assets/img/angr_basic/angr_basic2.png></p>
+<p>Ta cũng có thể dùng “shared_objects” và “main_object” để xem một số thông tin của các thư viện và binary “chính” mà Angr load vào</p>
+<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic3.png data-srcset="../assets/img/angr_basic/angr_basic3.png, ../assets/img/angr_basic/angr_basic3.png 1.5x, ../assets/img/angr_basic/angr_basic3.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic3.png title=../assets/img/angr_basic/angr_basic3.png></p>
+<p>Trong document có hướng dẫn một số lệnh khác như:</p>
+<ul>
+<li>“proj.loader.min_addr” và “proj.loader.max_addr” dùng để xem địa chỉ cao nhất và thấp nhất.</li>
+<li>proj.main_object.execstack : kiểm tra xem bit nx có được bật không.</li>
+<li>proj.main_object.pic : kiểm tra xem binary có phải là position independent code (PIC) hay không.</li>
+</ul>
+<hr>
+<h2 id=the-factory>The factory</h2>
+<p>Đây là chỗ tập hợp các object thường dùng của Angr, ví dụ như là</p>
+<h4 id=blocks>Blocks</h4>
+<p>Block là tập hợp các câu lệnh được thực hiện tuần tự, không rẽ nhánh. Để dễ hình dung hơn thì trong IDA, một khối như này chứa một block.</p>
+<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angr_basic/angr_basic4.png data-srcset="../assets/img/angr_basic/angr_basic4.png, ../assets/img/angr_basic/angr_basic4.png 1.5x, ../assets/img/angr_basic/angr_basic4.png 2x" data-sizes=auto alt=../assets/img/angr_basic/angr_basic4.png title=../assets/img/angr_basic/angr_basic4.png></p>
+<p>Để có một block tại một địa chỉ nào đó (giả sử là ở entry point đi), ta dùng:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>block</span><span class=p>(</span><span class=n>proj</span><span class=o>.</span><span class=n>entry</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Câu lệnh trên sẽ trả về một Block object, mang những thông tin về block tại địa chỉ mong muốn. Ta có thể lưu object này vào biến và sử dụng những lệnh khác để phân tích tiếp</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>block</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>block</span><span class=p>(</span><span class=n>proj</span><span class=o>.</span><span class=n>entry</span><span class=p>)</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>block</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>block</span><span class=p>(</span><span class=n>proj</span><span class=o>.</span><span class=n>entry</span><span class=p>)</span>
 <span class=n>block</span><span class=o>.</span><span class=n>pp</span><span class=p>()</span>
 <span class=n>block</span><span class=o>.</span><span class=n>instructions</span>
 <span class=n>block</span><span class=o>.</span><span class=n>instruction_addrs</span>
-</code></pre></td></tr></table></div></div><p>Các câu lệnh trên lần lượt là:
+</code></pre></td></tr></table>
+</div>
+</div><p>Các câu lệnh trên lần lượt là:
 - block.pp() : Dùng để in các câu lệnh assembly của block ra stdout (Note: pp là viết tắt của pretty-print)
 - block.instructions: trả về số câu lệnh trong block.
-- block.instruction_addrs: trả về một array chứa địa chỉ của các câu lệnh trong block.</p><h4 id=states>States</h4><p>Mình thực sự không biết giải thích cái state này như thế nào. Theo mình hiểu, khi dùng Angr execute một binary thì Angr sẽ khi lại các “trạng thái” của binary đó lúc chạy (bao gồm giá trị trong các thanh ghi và bộ nhớ,…). Mỗi “trạng thái” như thế được thể hiện bằng một object gọi là SimState</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>state</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=&lt;</span><span class=n>address</span><span class=o>&gt;</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Câu lệnh trên cho ta một SimState trong biến state, với giá trị trong thanh ghi RIP là (tức là câu lệnh được thực hiện tiếp theo nằm ở ). Ta tiếp tục phân tích SimState:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+- block.instruction_addrs: trả về một array chứa địa chỉ của các câu lệnh trong block.</p>
+<h4 id=states>States</h4>
+<p>Mình thực sự không biết giải thích cái state này như thế nào. Theo mình hiểu, khi dùng Angr execute một binary thì Angr sẽ khi lại các “trạng thái” của binary đó lúc chạy (bao gồm giá trị trong các thanh ghi và bộ nhớ,…). Mỗi “trạng thái” như thế được thể hiện bằng một object gọi là SimState</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>state</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>entry_state</span><span class=p>(</span><span class=n>addr</span><span class=o>=&lt;</span><span class=n>address</span><span class=o>&gt;</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Câu lệnh trên cho ta một SimState trong biến state, với giá trị trong thanh ghi RIP là (tức là câu lệnh được thực hiện tiếp theo nằm ở ). Ta tiếp tục phân tích SimState:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>rip</span> <span class=c1># lấy giá trị trong thanh ghi rip</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>rip</span> <span class=c1># lấy giá trị trong thanh ghi rip</span>
 <span class=n>state</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>rax</span> <span class=c1># lấy giá trị trong thanh ghi eax</span>
 <span class=n>state</span><span class=o>.</span><span class=n>mem</span><span class=p>[</span><span class=o>&lt;</span><span class=n>addr</span><span class=o>&gt;</span><span class=p>]</span><span class=o>.&lt;</span><span class=nb>type</span><span class=o>&gt;.</span><span class=n>resolved</span> <span class=c1># truy xuất giá trị tại ô nhớ &lt;addr&gt; theo kiểu &lt;type&gt; trong C</span>
-</code></pre></td></tr></table></div></div><p>Note: Ví dụ cho câu lệnh state.mem[]..resolved
+</code></pre></td></tr></table>
+</div>
+</div><p>Note: Ví dụ cho câu lệnh state.mem[]..resolved
 – state.mem[0x1000].char.resolved : trả về giá trị tại địa chỉ 0x1000, đọc theo quy tắc của kiểu char (tức là đọc 1 byte)
-– state.mem[0x1000].int.resolved : trả về giá trị tại 0x1000, đọc giống như kiểu int (đọc 4 byte)</p><p><strong>Note</strong>: Giá trị trả về của các câu lệnh ở trên thuộc kiểu bitvector. Bitvector là một dãy bit, được thể hiện dưới dạng số nguyên để tiện cho tính toán.Theo document, bitvector một kiểu dữ liệu mà Angr dùng để biểu diễn thông tin trong bộ nhớ. (not sure)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+– state.mem[0x1000].int.resolved : trả về giá trị tại 0x1000, đọc giống như kiểu int (đọc 4 byte)</p>
+<p><strong>Note</strong>: Giá trị trả về của các câu lệnh ở trên thuộc kiểu bitvector. Bitvector là một dãy bit, được thể hiện dưới dạng số nguyên để tiện cho tính toán.Theo document, bitvector một kiểu dữ liệu mà Angr dùng để biểu diễn thông tin trong bộ nhớ. (not sure)</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVV</span><span class=p>(</span><span class=o>&lt;</span><span class=n>value</span><span class=o>&lt;</span><span class=nb>len</span><span class=o>&gt;</span><span class=p>)</span> <span class=c1>#đổi giá trị &lt;value&gt; sang bitvector có độ dài &lt;len&gt;</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>BVV</span><span class=p>(</span><span class=o>&lt;</span><span class=n>value</span><span class=o>&lt;</span><span class=nb>len</span><span class=o>&gt;</span><span class=p>)</span> <span class=c1>#đổi giá trị &lt;value&gt; sang bitvector có độ dài &lt;len&gt;</span>
 
 <span class=n>state</span><span class=o>.</span><span class=n>solver</span><span class=o>.</span><span class=n>eval</span><span class=p>(</span><span class=n>bv</span><span class=p>)</span> <span class=c1>#đổi bitvector về lại kiểu int trong python</span>
 
 <span class=n>state</span><span class=o>.</span><span class=n>mem</span><span class=p>[</span><span class=o>&lt;</span><span class=n>addr</span><span class=o>&gt;</span><span class=p>]</span><span class=o>.&lt;</span><span class=nb>type</span><span class=o>&gt;.</span><span class=n>concrete</span> <span class=c1># tương tự như .resolved ở trên nhưng sẽ trả về giá trị kiểu int trong python</span>
-</code></pre></td></tr></table></div></div><p><strong>Note2</strong>: Có 2 câu lệnh cũng thường được dùng để load và store dữ liệu vào ô nhớ</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Note2</strong>: Có 2 câu lệnh cũng thường được dùng để load và store dữ liệu vào ô nhớ</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=o>&lt;</span><span class=n>address</span><span class=o>&gt;</span><span class=p>,</span><span class=o>&lt;</span><span class=n>datacó</span> <span class=n>thể</span> <span class=n>là</span> <span class=nb>int</span><span class=p>,</span> <span class=n>bitvector</span><span class=p>,</span><span class=o>...</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>store</span><span class=p>(</span><span class=o>&lt;</span><span class=n>address</span><span class=o>&gt;</span><span class=p>,</span><span class=o>&lt;</span><span class=n>datacó</span> <span class=n>thể</span> <span class=n>là</span> <span class=nb>int</span><span class=p>,</span> <span class=n>bitvector</span><span class=p>,</span><span class=o>...</span>
 <span class=n>state</span><span class=o>.</span><span class=n>memory</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=o>&lt;</span><span class=n>address</span><span class=o>&gt;</span><span class=p>,</span><span class=o>&lt;</span><span class=n>lengthh</span> <span class=n>là</span> <span class=n>số</span> <span class=n>byte</span> <span class=n>cần</span> <span class=n>đọc</span>
-</code></pre></td></tr></table></div></div><h4 id=simulation-managers>Simulation Managers</h4><p>Với SimState, ta có thể phân tích “trạng thái” của binary tại một thời điểm nhất định. Và nếu muốn nhảy từ state này sang state khác (giống kiểu execute cái binary ) thì ta sẽ dùng đến Simulation Managers</p><p>Tạo 1 Simulation Managers:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>simgr</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Ta vừa đưa một state vào trong simulation_manager, khi đó “simgr.active[0]” chính là cái state mà chúng ta đã đưa vào. Vậy tức là ta có thể coi “simgr.active[0]” như một state</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=simulation-managers>Simulation Managers</h4>
+<p>Với SimState, ta có thể phân tích “trạng thái” của binary tại một thời điểm nhất định. Và nếu muốn nhảy từ state này sang state khác (giống kiểu execute cái binary ) thì ta sẽ dùng đến Simulation Managers</p>
+<p>Tạo 1 Simulation Managers:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>simgr</span> <span class=o>=</span> <span class=n>proj</span><span class=o>.</span><span class=n>factory</span><span class=o>.</span><span class=n>simulation_manager</span><span class=p>(</span><span class=n>state</span><span class=p>)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Ta vừa đưa một state vào trong simulation_manager, khi đó “simgr.active[0]” chính là cái state mà chúng ta đã đưa vào. Vậy tức là ta có thể coi “simgr.active[0]” như một state</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>simgr</span><span class=o>.</span><span class=n>active</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>mem</span><span class=p>[</span><span class=mh>0x1021ab0</span><span class=p>]</span><span class=o>.</span><span class=n>int</span><span class=o>.</span><span class=n>concrete</span> 
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>simgr</span><span class=o>.</span><span class=n>active</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>mem</span><span class=p>[</span><span class=mh>0x1021ab0</span><span class=p>]</span><span class=o>.</span><span class=n>int</span><span class=o>.</span><span class=n>concrete</span> 
 <span class=n>simgr</span><span class=o>.</span><span class=n>active</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>regs</span><span class=o>.</span><span class=n>rpi</span>
-</code></pre></td></tr></table></div></div><p>Tiếp theo, để execute, ta sẽ dùng</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>simgr</span><span class=o>.</span><span class=n>step</span><span class=p>()</span>
-</code></pre></td></tr></table></div></div><p>Lệnh này tương đương với việc execute một block. Lưu ý là step() sẽ không làm thay đổi biến state, nó chỉ thay đổi “simgr.active[0]” mà thôi.</p><h3 id=symbolic-execution>Symbolic Execution</h3><p>Cái này là mục tiêu khi học Angr đây 🙂</p><p>Symbolic Execution là cách khảo sát toàn bộ các “đường đi” có thể có khi chạy chương trình. Giả sử ta có đoạn chương trình sau:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</code></pre></td></tr></table>
+</div>
+</div><p>Tiếp theo, để execute, ta sẽ dùng</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>simgr</span><span class=o>.</span><span class=n>step</span><span class=p>()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Lệnh này tương đương với việc execute một block. Lưu ý là step() sẽ không làm thay đổi biến state, nó chỉ thay đổi “simgr.active[0]” mà thôi.</p>
+<h3 id=symbolic-execution>Symbolic Execution</h3>
+<p>Cái này là mục tiêu khi học Angr đây 🙂</p>
+<p>Symbolic Execution là cách khảo sát toàn bộ các “đường đi” có thể có khi chạy chương trình. Giả sử ta có đoạn chương trình sau:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-python data-lang=python><span class=n>num</span><span class=o>=</span><span class=nb>input</span><span class=p>(</span><span class=s2>&#34;Enter number: &#34;</span><span class=p>)</span>
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=n>num</span><span class=o>=</span><span class=nb>input</span><span class=p>(</span><span class=s2>&#34;Enter number: &#34;</span><span class=p>)</span>
 <span class=k>if</span> <span class=n>num</span><span class=o>==</span><span class=mi>4</span><span class=p>:</span>
    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;Good&#34;</span><span class=p>)</span>
 <span class=k>else</span><span class=p>:</span>
    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;I don&#39;t feel so good&#34;</span><span class=p>)</span>
-</code></pre></td></tr></table></div></div><p>Chương trình trên có thể thực thi theo 2 hướng: một hướng in ra “Good” (khi num==4) và hướng còn lại là in ra ” I don’t feel so good”. Với Symbolic Execution, ta sẽ khảo sát cả 2 hướng này.</p><p>Ok, vậy giả sử ta muốn đến được dòng print(“Good”), tức là muốn tìm xem input như thế nào thì chương trình in ra chữ “Good”. Symbolic Execution sẽ giúp ta thực hiện việc này dễ dàng hơn, thông qua các bước sau:</p><ul><li><strong>Step 1: Inject a Symbol</strong><br>Symbol ở đây chính là Symbolic variable được nói đến ở trên. Chúng là các biến mà ta không biết giá trị, tuy nhiên có thể tìm được giá trị thông qua các constraints (ràng buộc).</li><li><strong>Step 2: Branch (rẽ nhánh)</strong><br>Branch ở đây tức là rẽ ra các hướng thực thi (execution path) khác nhau. Như trong ví dụ trên, đến câu lệnh if, ta sẽ rẽ ra 2 nhánh là: <em>num == 4</em> và <em>num != 4</em></li><li><strong>Step 3: Evaluate each Branch</strong><br>Đến bước này, chúng ta sẽ phân tích từng nhánh một. Nếu gặp nhánh không hợp yêu cầu (không đến được lệnh <em>print (“Good”)</em>), thì ta sẽ bỏ nhánh đó và xét một nhánh mới.<br>Khi tìm được nhánh đạt yêu cầu, ta cũng sẽ có được những constraint cho symbol. Như trong vd trên, để đến được <em>print(“Good”)</em>, ta phải có điều kiện <em>num==4</em>. Vậy từ constraint này ta có thể suy ra được input.</li></ul><p>Angr sẽ giúp ta thực hiện các bước trên nhanh và dễ dàng hơn. Ok, vậy giờ lôi Angr_ctf ra giải để biết cách dùng thôi</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2020-07-07</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../../tags/learning/>learning</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../../>Home</a></span></section></div><div class=post-nav><a href=../../../posts/old_posts/2020-07-07-angr-ctf/ class=prev rel=prev title=Angr_CTF><i class="fas fa-angle-left fa-fw"></i>Angr_CTF</a>
-<a href=../../../posts/old_posts/2020-07-07-angstrom-2020/ class=next rel=next title="A week with Angstromctf 2020">A week with Angstromctf 2020<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.85.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../../ target=_blank>Frost</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><script type=text/javascript src=../../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../../js/theme.min.js></script></body></html>
+</code></pre></td></tr></table>
+</div>
+</div><p>Chương trình trên có thể thực thi theo 2 hướng: một hướng in ra “Good” (khi num==4) và hướng còn lại là in ra ” I don’t feel so good”. Với Symbolic Execution, ta sẽ khảo sát cả 2 hướng này.</p>
+<p>Ok, vậy giả sử ta muốn đến được dòng print(“Good”), tức là muốn tìm xem input như thế nào thì chương trình in ra chữ “Good”. Symbolic Execution sẽ giúp ta thực hiện việc này dễ dàng hơn, thông qua các bước sau:</p>
+<ul>
+<li><strong>Step 1: Inject a Symbol</strong><br>
+Symbol ở đây chính là Symbolic variable được nói đến ở trên. Chúng là các biến mà ta không biết giá trị, tuy nhiên có thể tìm được giá trị thông qua các constraints (ràng buộc).</li>
+<li><strong>Step 2: Branch (rẽ nhánh)</strong><br>
+Branch ở đây tức là rẽ ra các hướng thực thi (execution path) khác nhau. Như trong ví dụ trên, đến câu lệnh if, ta sẽ rẽ ra 2 nhánh là: <em>num == 4</em> và <em>num != 4</em></li>
+<li><strong>Step 3: Evaluate each Branch</strong><br>
+Đến bước này, chúng ta sẽ phân tích từng nhánh một. Nếu gặp nhánh không hợp yêu cầu (không đến được lệnh <em>print (“Good”)</em>), thì ta sẽ bỏ nhánh đó và xét một nhánh mới.<br>
+Khi tìm được nhánh đạt yêu cầu, ta cũng sẽ có được những constraint cho symbol. Như trong vd trên, để đến được <em>print(“Good”)</em>, ta phải có điều kiện <em>num==4</em>. Vậy từ constraint này ta có thể suy ra được input.</li>
+</ul>
+<p>Angr sẽ giúp ta thực hiện các bước trên nhanh và dễ dàng hơn. Ok, vậy giờ lôi Angr_ctf ra giải để biết cách dùng thôi</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2020-07-07</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../../tags/learning/>learning</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../../>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=../../../posts/old_posts/2020-07-07-angr-ctf/ class=prev rel=prev title=Angr_CTF><i class="fas fa-angle-left fa-fw"></i>Angr_CTF</a>
+<a href=../../../posts/old_posts/2020-07-07-angstrom-2020/ class=next rel=next title="A week with Angstromctf 2020">A week with Angstromctf 2020<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../../ target=_blank>Frost</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><script type=text/javascript src=../../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../../js/theme.min.js></script></body>
+</html>

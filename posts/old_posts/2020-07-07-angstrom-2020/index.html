@@ -19,84 +19,42 @@ I spent the whole week doing nothing but solving the RE challenges from Angstrom
 <meta name=application-name content="LoveIt">
 <meta name=apple-mobile-web-app-title content="LoveIt"><link rel="shortcut icon" type=image/x-icon href=../../../favicon.ico>
 <link rel=icon type=image/png sizes=32x32 href=../../../favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=../../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../../apple-touch-icon.png><link rel=manifest href=../../../site.webmanifest><link rel=canonical href=../../../posts/old_posts/2020-07-07-angstrom-2020/><link rel=prev href=../../../posts/old_posts/2020-07-07-angr-basic/><link rel=next href=../../../posts/old_posts/2020-09-11-sehveh/><link rel=stylesheet href=../../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../../css/style.min.css><link rel=stylesheet href=../../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"A week with Angstromctf 2020","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/old_posts\/2020-07-07-angstrom-2020\/"},"genre":"posts","keywords":"writeup","wordcount":868,"url":"\/posts\/old_posts\/2020-07-07-angstrom-2020\/","datePublished":"2020-07-07T00:00:00+00:00","dateModified":"2020-07-07T00:00:00+00:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head>
-<body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'dark'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'dark'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<link rel=icon type=image/png sizes=16x16 href=../../../favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=../../../apple-touch-icon.png><link rel=manifest href=../../../site.webmanifest><link rel=canonical href=../../../posts/old_posts/2020-07-07-angstrom-2020/><link rel=prev href=../../../posts/old_posts/2020-07-07-angr-basic/><link rel=next href=../../../posts/old_posts/2020-09-11-sehveh/><link rel=stylesheet href=../../../lib/normalize/normalize.min.css><link rel=stylesheet href=../../../css/style.min.css><link rel=stylesheet href=../../../lib/fontawesome-free/all.min.css><link rel=stylesheet href=../../../lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"A week with Angstromctf 2020","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"\/posts\/old_posts\/2020-07-07-angstrom-2020\/"},"genre":"posts","keywords":"writeup","wordcount":868,"url":"\/posts\/old_posts\/2020-07-07-angstrom-2020\/","datePublished":"2020-07-07T00:00:00+00:00","dateModified":"2020-07-07T00:00:00+00:00","publisher":{"@type":"Organization","name":"Frost"},"author":{"@type":"Person","name":"Frost"},"description":""}</script></head><body header-desktop header-mobile><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"dark"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"dark"==="dark")&&document.body.setAttribute("theme","dark")</script>
 <div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
 <div class=header-wrapper>
 <div class=header-title>
 <a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
-</div>
-<div class=menu>
+</div><div class=menu>
 <div class=menu-inner><a class=menu-item href=../../../posts/> Posts </a><a class=menu-item href=../../../tags/> Tags </a><a class=menu-item href=../../../about/> About </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
 <i class="fas fa-adjust fa-fw"></i>
 </a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
+</div></div></div></header><header class=mobile id=header-mobile>
 <div class=header-container>
 <div class=header-wrapper>
 <div class=header-title>
 <a href=../../../ title="Frost's blog"><img class="lazyload logo" src=../../../svg/loading.min.svg data-src=../../../images/logo.jpg data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x" data-sizes=auto alt=/images/logo.jpg title=/images/logo.jpg></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
+</div><div class=menu-toggle id=menu-toggle-mobile>
 <span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><a class=menu-item href=../../../posts/ title>Posts</a><a class=menu-item href=../../../tags/ title>Tags</a><a class=menu-item href=../../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+</div></div><div class=menu id=menu-mobile><a class=menu-item href=../../../posts/ title>Posts</a><a class=menu-item href=../../../tags/ title>Tags</a><a class=menu-item href=../../../about/ title>About</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
 <i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
+</a></div></div></header><div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div></div><main class=main>
 <div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">A week with Angstromctf 2020</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=../../../ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-07-07>2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;868 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
+<h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">A week with Angstromctf 2020</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=../../../ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-07-07>2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;868 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept>
 <div class="details-summary toc-title">
 <span>Contents</span>
 <span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+</div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
 <ul>
 <li>
 <ul>
-<li></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><p>So this post’s gonna be in English. Why? I don’t know, just feel like writing in English 🙂</p>
-<p>I spent the whole week doing nothing but solving the RE challenges from Angstromctf (so far, I only managed to solve half of them, the easy half, that is). So I figured I should write a little bit about those challenges and what I’ve learned trying to solve them. Ok, here we go.</p>
-<hr>
-<h4 id=patcherman>Patcherman</h4>
-<p>The first thing I did was opening the binary in IDA, and then, this thing popped up on my screen.</p>
-<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom1.png data-srcset="../assets/img/angstrom2020/angstrom1.png, ../assets/img/angstrom2020/angstrom1.png 1.5x, ../assets/img/angstrom2020/angstrom1.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom1.png title=../assets/img/angstrom2020/angstrom1.png>{: .mx-auto.d-block :}</p>
-<p>So I just went on Google and searched for “SHT table”. It turned out that an ELF file consists of many sections, such as .got, .text, .rodata,… and the SHT (section header table) is kinda like an index for these sections. It contains information like: address, size,… of a section. In the file’s header, we have the “SHT file offset”, which shows us the “distance” between SHT and the start of our binary. The challenge did say something about the header, so maybe this offset was modified.</p>
-<p>And indeed it was. The offset of our file was 0, which is really weird compared to other files. While searching for a way to calculate the right offset (a senior in my team solved this chall already and he brute-forced the correct offset, but I wanted to find another way because…well, I don’t know how to brute-force this), I came across a CTF write-up. I learned that the SHT table usually locates at the end of the binary and long story short I got this:</p>
-<p><strong><em>SHT_offset=(binary_length)-(entry_size)</em>(number_of_entries)</strong>*</p>
-<p>I tried that and it worked. Problem solved? Nope 😦
-I checked the file one more time and see this:</p>
-<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom2.png data-srcset="../assets/img/angstrom2020/angstrom2.png, ../assets/img/angstrom2020/angstrom2.png 1.5x, ../assets/img/angstrom2020/angstrom2.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom2.png title=../assets/img/angstrom2020/angstrom2.png>{: .mx-auto.d-block :}</p>
-<p>The value of “dword_601050” is not “1337BEEFh”, so it will always jump to the false branch. Obviously, I tried to patch “dword_601050” to “1337BEEF”. Luckily, that was the solution, and I got the flag.</p>
-<p><strong>Note:</strong></p>
-<p>– Fixing the header was totally unnecessary 🙂 . IDA can run just fine with a wrong SHT offset. What interesting is, gdb can’t, and I still don’t know why.</p>
-<hr>
-<h4 id=a-happy-family>A happy family</h4>
-<p>This is a 2-in-1 challenge: a pwn and a RE (of course I only solved the RE one), both have the same source code and this led me to a mistake. First, I ran the binary.</p>
-<p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom3.png data-srcset="../assets/img/angstrom2020/angstrom3.png, ../assets/img/angstrom2020/angstrom3.png 1.5x, ../assets/img/angstrom2020/angstrom3.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom3.png title=../assets/img/angstrom2020/angstrom3.png>{: .mx-auto.d-block :}</p>
-<p>Then checked the source:</p>
-<div class=highlight><div class=chroma>
+<li></li></ul></li></ul></nav></div></div><div class=content id=content><p>So this post’s gonna be in English. Why? I don’t know, just feel like writing in English 🙂</p><p>I spent the whole week doing nothing but solving the RE challenges from Angstromctf (so far, I only managed to solve half of them, the easy half, that is). So I figured I should write a little bit about those challenges and what I’ve learned trying to solve them. Ok, here we go.</p><hr>
+<h4 id=patcherman>Patcherman</h4><p>The first thing I did was opening the binary in IDA, and then, this thing popped up on my screen.</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom1.png data-srcset="../assets/img/angstrom2020/angstrom1.png, ../assets/img/angstrom2020/angstrom1.png 1.5x, ../assets/img/angstrom2020/angstrom1.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom1.png title=../assets/img/angstrom2020/angstrom1.png>{: .mx-auto.d-block :}</p><p>So I just went on Google and searched for “SHT table”. It turned out that an ELF file consists of many sections, such as .got, .text, .rodata,… and the SHT (section header table) is kinda like an index for these sections. It contains information like: address, size,… of a section. In the file’s header, we have the “SHT file offset”, which shows us the “distance” between SHT and the start of our binary. The challenge did say something about the header, so maybe this offset was modified.</p><p>And indeed it was. The offset of our file was 0, which is really weird compared to other files. While searching for a way to calculate the right offset (a senior in my team solved this chall already and he brute-forced the correct offset, but I wanted to find another way because…well, I don’t know how to brute-force this), I came across a CTF write-up. I learned that the SHT table usually locates at the end of the binary and long story short I got this:</p><p><strong><em>SHT_offset=(binary_length)-(entry_size)</em>(number_of_entries)</strong>*</p><p>I tried that and it worked. Problem solved? Nope 😦
+I checked the file one more time and see this:</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom2.png data-srcset="../assets/img/angstrom2020/angstrom2.png, ../assets/img/angstrom2020/angstrom2.png 1.5x, ../assets/img/angstrom2020/angstrom2.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom2.png title=../assets/img/angstrom2020/angstrom2.png>{: .mx-auto.d-block :}</p><p>The value of “dword_601050” is not “1337BEEFh”, so it will always jump to the false branch. Obviously, I tried to patch “dword_601050” to “1337BEEF”. Luckily, that was the solution, and I got the flag.</p><p><strong>Note:</strong></p><p>– Fixing the header was totally unnecessary 🙂 . IDA can run just fine with a wrong SHT offset. What interesting is, gdb can’t, and I still don’t know why.</p><hr>
+<h4 id=a-happy-family>A happy family</h4><p>This is a 2-in-1 challenge: a pwn and a RE (of course I only solved the RE one), both have the same source code and this led me to a mistake. First, I ran the binary.</p><p><img class=lazyload src=../../../svg/loading.min.svg data-src=../assets/img/angstrom2020/angstrom3.png data-srcset="../assets/img/angstrom2020/angstrom3.png, ../assets/img/angstrom2020/angstrom3.png 1.5x, ../assets/img/angstrom2020/angstrom3.png 2x" data-sizes=auto alt=../assets/img/angstrom2020/angstrom3.png title=../assets/img/angstrom2020/angstrom3.png>{: .mx-auto.d-block :}</p><p>Then checked the source:</p><div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
@@ -110,23 +68,20 @@ I checked the file one more time and see this:</p>
 </span><span class=lnt>10
 </span><span class=lnt>11
 </span><span class=lnt>12
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
-    <span class=n>setvbuf</span><span class=p>(</span><span class=n>stdout</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>_IONBF</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
-    <span class=kt>int</span> <span class=n>fval</span> <span class=o>=</span> <span class=n>fork</span><span class=p>();</span>
-    <span class=n>alarm</span><span class=p>(</span><span class=mi>300</span><span class=p>);</span>  <span class=c1>// sometimes the child processes don&#39;t die
-</span><span class=c1></span>    <span class=n>prctl</span><span class=p>(</span><span class=n>PR_SET_PDEATHSIG</span><span class=p>,</span> <span class=n>SIGTERM</span><span class=p>);</span>
-    <span class=k>if</span> <span class=p>(</span><span class=n>fval</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
-        <span class=n>setfif</span><span class=p>(</span><span class=n>getpid</span><span class=p>());</span>
-        <span class=n>child</span><span class=p>();</span>
-    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-        <span class=n>setfif</span><span class=p>(</span><span class=n>fval</span><span class=p>);</span>
-        <span class=n>parent</span><span class=p>();</span>
-    <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>setvbuf</span><span class=p>(</span><span class=n>stdout</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>,</span> <span class=n>_IONBF</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>fval</span> <span class=o>=</span> <span class=n>fork</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>alarm</span><span class=p>(</span><span class=mi>300</span><span class=p>);</span>  <span class=c1>// sometimes the child processes don&#39;t die
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>prctl</span><span class=p>(</span><span class=n>PR_SET_PDEATHSIG</span><span class=p>,</span> <span class=n>SIGTERM</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>fval</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>setfif</span><span class=p>(</span><span class=n>getpid</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>        <span class=n>child</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>setfif</span><span class=p>(</span><span class=n>fval</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>parent</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
@@ -136,24 +91,16 @@ I checked the file one more time and see this:</p>
 </span><span class=lnt>6
 </span><span class=lnt>7
 </span><span class=lnt>8
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=kt>void</span> <span class=nf>parent</span><span class=p>()</span> <span class=p>{</span>
-    <span class=kt>char</span> <span class=n>inp</span><span class=p>[</span><span class=n>PS</span> <span class=o>+</span> <span class=mi>1</span><span class=p>];</span>
-    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;  </span><span class=se>\\</span><span class=s>   /</span><span class=se>\n</span><span class=s> /-----</span><span class=se>\\\n</span><span class=s> |  o  |</span><span class=se>\n</span><span class=s> | </span><span class=se>\\</span><span class=s>|/ |</span><span class=se>\n</span><span class=s> | / </span><span class=se>\\</span><span class=s> |</span><span class=se>\n</span><span class=s> </span><span class=se>\\</span><span class=s>-----/</span><span class=se>\n</span><span class=s>  |   |&#34;</span><span class=p>);</span>
-    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;This TV show is so boring, it&#39;s just a guy standing still.&#34;</span><span class=p>);</span>
-    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;I need a GOOD TV show to watch with my child.&#34;</span><span class=p>);</span>
-    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Which TV show do you recommend?&#34;</span><span class=p>);</span>
-    <span class=n>fgets</span><span class=p>(</span><span class=n>inp</span><span class=p>,</span> <span class=n>PS</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>stdin</span><span class=p>);</span>
-  <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>The string that got printed and the fgets() was all in parent() funcion. So I assumed that child() function was for the pwn challenge and ignored it. Of course that was wrong. If it hasn’t been for the hint from Catafact, I couldn’t have solved this 😀 .</p>
-<p>But there was still something I don’t understand: How can both parent() and child() get executed? (There’s an if statement there). So of course, Google.</p>
-<p>And then I learned about fork(). This function call another process (we call it the “child process”) that runs at the same time with the caller. So basically after f0rk(), we will have 2 processes running together. In the “child process” the return value of fork() is 0, and in the caller, the id of our “child process” is returned.</p>
-<p>So in this challenge, we have 2 different process: the “parent process” (the caller) will execute function parent() and the child process will execute child().</p>
-<p>After I got that, the challenge didn’t seem hard anymore. The program takes my input, and converts them to 4 “number” in “base 13”. Instead of “012345…”, this “base 13” has the letters in “angstromctf20” for digits. After the conversion, the program performs a comparison:</p>
-<div class=highlight><div class=chroma>
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>void</span> <span class=nf>parent</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>char</span> <span class=n>inp</span><span class=p>[</span><span class=n>PS</span> <span class=o>+</span> <span class=mi>1</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;  </span><span class=se>\\</span><span class=s>   /</span><span class=se>\n</span><span class=s> /-----</span><span class=se>\\\n</span><span class=s> |  o  |</span><span class=se>\n</span><span class=s> | </span><span class=se>\\</span><span class=s>|/ |</span><span class=se>\n</span><span class=s> | / </span><span class=se>\\</span><span class=s> |</span><span class=se>\n</span><span class=s> </span><span class=se>\\</span><span class=s>-----/</span><span class=se>\n</span><span class=s>  |   |&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;This TV show is so boring, it&#39;s just a guy standing still.&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;I need a GOOD TV show to watch with my child.&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Which TV show do you recommend?&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>fgets</span><span class=p>(</span><span class=n>inp</span><span class=p>,</span> <span class=n>PS</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>stdin</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>The string that got printed and the fgets() was all in parent() funcion. So I assumed that child() function was for the pwn challenge and ignored it. Of course that was wrong. If it hasn’t been for the hint from Catafact, I couldn’t have solved this 😀 .</p><p>But there was still something I don’t understand: How can both parent() and child() get executed? (There’s an if statement there). So of course, Google.</p><p>And then I learned about fork(). This function call another process (we call it the “child process”) that runs at the same time with the caller. So basically after f0rk(), we will have 2 processes running together. In the “child process” the return value of fork() is 0, and in the caller, the id of our “child process” is returned.</p><p>So in this challenge, we have 2 different process: the “parent process” (the caller) will execute function parent() and the child process will execute child().</p><p>After I got that, the challenge didn’t seem hard anymore. The program takes my input, and converts them to 4 “number” in “base 13”. Instead of “012345…”, this “base 13” has the letters in “angstromctf20” for digits. After the conversion, the program performs a comparison:</p><div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
@@ -167,60 +114,37 @@ I checked the file one more time and see this:</p>
 </span><span class=lnt>10
 </span><span class=lnt>11
 </span><span class=lnt>12
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>if</span> <span class=p>(</span><span class=n>strcmp</span><span class=p>(</span><span class=n>c1</span><span class=p>,</span> <span class=s>&#34;artomtf2srn00tgm2f&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=n>strcmp</span><span class=p>(</span><span class=n>c2</span><span class=p>,</span> <span class=s>&#34;ng0fa0mat0tmmmra0c&#34;</span><span class=p>)</span> <span class=o>||</span>
-        <span class=n>strcmp</span><span class=p>(</span><span class=n>c3</span><span class=p>,</span> <span class=s>&#34;ngnrmcornttnsmgcgr&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=n>strcmp</span><span class=p>(</span><span class=n>c4</span><span class=p>,</span> <span class=s>&#34;a0fn2rfa00tcgctaot&#34;</span><span class=p>))</span> 
-    <span class=p>{</span>
-        <span class=n>printf</span><span class=p>(</span><span class=s>&#34;Oh I&#39;ve watched that show, I don&#39;t really like it.</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
-        <span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-    <span class=p>}</span>
-    <span class=c1>// This is the flag for the rev challenge
-</span><span class=c1></span>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Wait that name sounds familiar...&#34;</span><span class=p>);</span>
-    <span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;...&#34;</span><span class=p>);</span>
-    <span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-    <span class=n>printf</span><span class=p>(</span><span class=s>&#34;Oh I know why! It&#39;s because the flag is actf{% raw  %}{%s}{% endraw %}!</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>inp</span><span class=p>);</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>All I needed to do was writing a script to convert those 4 strings into the correct flag. Done!</p>
-<hr>
-<h4 id=autorev-assemble>Autorev, Assemble!</h4>
-<p>Before this challenge, I had never heard about anything that can help me solve RE challenge automatically, so I was pretty confused at first. But thanks to Cothan, a senior in the team, I learned about Angr and what can it do. I won’t write much about this challenge now because I haven’t fully understand the way Angr works and its syntax yet. So maybe later, then.</p>
-</div><div class=post-footer id=post-footer>
+</span></code></pre></td><td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=n>strcmp</span><span class=p>(</span><span class=n>c1</span><span class=p>,</span> <span class=s>&#34;artomtf2srn00tgm2f&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=n>strcmp</span><span class=p>(</span><span class=n>c2</span><span class=p>,</span> <span class=s>&#34;ng0fa0mat0tmmmra0c&#34;</span><span class=p>)</span> <span class=o>||</span>
+</span></span><span class=line><span class=cl>        <span class=n>strcmp</span><span class=p>(</span><span class=n>c3</span><span class=p>,</span> <span class=s>&#34;ngnrmcornttnsmgcgr&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=n>strcmp</span><span class=p>(</span><span class=n>c4</span><span class=p>,</span> <span class=s>&#34;a0fn2rfa00tcgctaot&#34;</span><span class=p>))</span> 
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>printf</span><span class=p>(</span><span class=s>&#34;Oh I&#39;ve watched that show, I don&#39;t really like it.</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// This is the flag for the rev challenge
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Wait that name sounds familiar...&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;...&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>printf</span><span class=p>(</span><span class=s>&#34;Oh I know why! It&#39;s because the flag is actf{% raw  %}{%s}{% endraw %}!</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>inp</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>All I needed to do was writing a script to convert those 4 strings into the correct flag. Done!</p><hr>
+<h4 id=autorev-assemble>Autorev, Assemble!</h4><p>Before this challenge, I had never heard about anything that can help me solve RE challenge automatically, so I was pretty confused at first. But thanks to Cothan, a senior in the team, I learned about Angr and what can it do. I won’t write much about this challenge now because I haven’t fully understand the way Angr works and its syntax yet. So maybe later, then.</p></div><div class=post-footer id=post-footer>
 <div class=post-info>
 <div class=post-info-line>
 <div class=post-info-mod>
 <span>Updated on 2020-07-07</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md></div>
-<div class=post-info-share>
+</div><div class=post-info-license></div></div><div class=post-info-line>
+<div class=post-info-md></div><div class=post-info-share>
 <span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../../tags/writeup/>writeup</a></section>
-<section>
+</div></div></div><div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=../../../tags/writeup/>writeup</a></section><section>
 <span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=../../../>Home</a></span>
-</section>
-</div>
-<div class=post-nav><a href=../../../posts/old_posts/2020-07-07-angr-basic/ class=prev rel=prev title="Angr basic"><i class="fas fa-angle-left fa-fw"></i>Angr basic</a>
-<a href=../../../posts/old_posts/2020-09-11-sehveh/ class=next rel=next title="Rootme challenge - SEHVEH">Rootme challenge - SEHVEH<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-</article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../../ target=_blank>Frost</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+</section></div><div class=post-nav><a href=../../../posts/old_posts/2020-07-07-angr-basic/ class=prev rel=prev title="Angr basic"><i class="fas fa-angle-left fa-fw"></i>Angr basic</a>
+<a href=../../../posts/old_posts/2020-09-11-sehveh/ class=next rel=next title="Rootme challenge - SEHVEH">Rootme challenge - SEHVEH<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer>
+<div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.93.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=../../../ target=_blank>Frost</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
 <i class="fas fa-arrow-up fa-fw"></i>
 </a><a href=# id=view-comments class=fixed-button title="View Comments">
 <i class="fas fa-comment fa-fw"></i>
 </a>
-</div><script type=text/javascript src=../../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../../js/theme.min.js></script></body>
-</html>
+</div><script type=text/javascript src=../../../lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=../../../lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=../../../lib/clipboard/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:100},comment:{}}</script><script type=text/javascript src=../../../js/theme.min.js></script></body></html>

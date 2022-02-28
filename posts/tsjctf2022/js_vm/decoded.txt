@@ -1,0 +1,551 @@
+MVV (MVI) A = 2
+JMR A
+MVV (MVI) D = 75
+MVV (AUI) D += 0
+CAL D
+MVV (MVI) A = 30
+MVV (AUI) A += 256
+LDR C = Memory @ A + 0
+MVV (MVI) A = 31
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) D = 27
+MVV (AUI) D += 0
+JCP GTE C >= A --> Memory @ D
+MVV (MVI) D = 156
+MVV (AUI) D += 0
+CAL D
+MVV (MVI) D = 211
+MVV (AUI) D += 0
+CAL D
+MVR C = C + 1
+MVV (MVI) A = 30
+MVV (AUI) A += 256
+STR Memory @ A + 0 = C
+MVV (MVI) D = 5
+MVV (AUI) D += 0
+JMR D
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+MVV (MVI) B = 0
+MVV (AUI) B += 0
+STR Memory @ A + 0 = B
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+LDR C = Memory @ A + 0
+MVV (MVI) A = 27
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) D = 67
+MVV (AUI) D += 0
+JCP GTE C >= A --> Memory @ D
+MVV (MVI) A = 191
+MVV (AUI) A += 256
+ATH C A 0
+Arithmetic A = A + C
+LDR A = Memory @ A + 0
+MVV (MVI) B = 85
+MVV (AUI) B += 256
+ATH C B 0
+Arithmetic B = B + C
+LDR B = Memory @ B + 0
+MVV (MVI) D = 59
+MVV (AUI) D += 0
+JCP NEQ A !== B --> Memory @ D
+MVR C = C + 1
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+STR Memory @ A + 0 = C
+MVV (MVI) D = 32
+MVV (AUI) D += 0
+JMR D
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 7
+MVV (AUI) B += 512
+MVV (MVI) C = 4
+MVV (AUI) C += 0
+NOA SYS
+NOA HLT
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 254
+MVV (AUI) B += 256
+MVV (MVI) C = 4
+MVV (AUI) C += 0
+NOA SYS
+NOA HLT
+PSH A
+PSH B
+PSH C
+PSH D
+MVV (MVI) B = 28
+MVV (AUI) B += 256
+LDR B = Memory @ B + 0
+MVV (MVI) A = 27
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) D = 151
+MVV (AUI) D += 0
+JCP GTE B >= A --> Memory @ D
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 244
+MVV (AUI) B += 256
+MVV (MVI) C = 4
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 28
+MVV (AUI) B += 256
+LDR B = Memory @ B + 0
+MVV (MVI) C = 0
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 250
+MVV (AUI) B += 256
+MVV (MVI) C = 4
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) A = 1
+MVV (AUI) A += 0
+MVV (MVI) C = 0
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) D = 110
+MVV (AUI) D += 0
+MVR A = B + 0
+MVV (MVI) B = 1
+MVV (AUI) B += 0
+JCP LT A < B --> Memory @ D
+MVV (MVI) B = 85
+MVV (AUI) B += 256
+MVV (MVI) C = 28
+MVV (AUI) C += 256
+LDR C = Memory @ C + 0
+ATH C B 0
+Arithmetic B = B + C
+STR Memory @ B + 0 = A
+MVR B = A + 0
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) C = 3
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) A = 0
+MVV (AUI) A += 0
+MVV (MVI) B = 10
+MVV (AUI) B += 0
+MVV (MVI) C = 3
+MVV (AUI) C += 0
+NOA SYS
+MVV (MVI) A = 28
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVR A = A + 1
+MVV (MVI) B = 28
+MVV (AUI) B += 256
+STR Memory @ B + 0 = A
+MVV (MVI) D = 79
+MVV (AUI) D += 0
+JMR D
+POP to D
+POP to C
+POP to B
+POP to A
+NOA RET
+PSH A
+PSH B
+PSH C
+PSH D
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+MVV (MVI) B = 0
+MVV (AUI) B += 0
+STR Memory @ A + 0 = B
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+LDR C = Memory @ A + 0
+MVV (MVI) A = 27
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) D = 206
+MVV (AUI) D += 0
+JCP GTE C >= A --> Memory @ D
+MVV (MVI) A = 85
+MVV (AUI) A += 256
+ATH C A 0
+Arithmetic A = A + C
+LDR A = Memory @ A + 0
+MVR B = A + 0
+MVV (MVI) A = 32
+MVV (AUI) A += 256
+ATH C A 0
+Arithmetic A = A + C
+LDR D = Memory @ A + 0
+MVV (MVI) A = 85
+MVV (AUI) A += 256
+ATH D A 0
+Arithmetic A = A + D
+LDR D = Memory @ A + 0
+MVV (MVI) A = 85
+MVV (AUI) A += 256
+ATH C A 0
+Arithmetic A = A + C
+STR Memory @ A + 0 = D
+MVV (MVI) A = 32
+MVV (AUI) A += 256
+ATH C A 0
+Arithmetic A = A + C
+LDR D = Memory @ A + 0
+MVV (MVI) A = 85
+MVV (AUI) A += 256
+ATH D A 0
+Arithmetic A = A + D
+STR Memory @ A + 0 = B
+MVR C = C + 1
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+STR Memory @ A + 0 = C
+MVV (MVI) D = 165
+MVV (AUI) D += 0
+JMR D
+POP to D
+POP to C
+POP to B
+POP to A
+NOA RET
+PSH A
+PSH B
+PSH C
+PSH D
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+MVV (MVI) B = 0
+MVV (AUI) B += 0
+STR Memory @ A + 0 = B
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+LDR C = Memory @ A + 0
+MVV (MVI) A = 27
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) D = 22
+MVV (AUI) D += 256
+JCP GTE C >= A --> Memory @ D
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+LDR A = Memory @ A + 0
+MVV (MVI) B = 30
+MVV (AUI) B += 256
+LDR B = Memory @ B + 0
+ATH B A 0
+Arithmetic A = A + B
+MVV (MVI) B = 11
+MVV (AUI) B += 0
+ATH B A 0
+Arithmetic A = A + B
+MVR D = A + 0
+MVV (MVI) B = 27
+MVV (AUI) B += 256
+LDR B = Memory @ B + 0
+ATH B A 3
+Arithmetic A = A / B floor
+MVV (MVI) B = 27
+MVV (AUI) B += 256
+LDR B = Memory @ B + 0
+ATH B A 2
+Arithmetic A = A * B
+ATH A D 1
+Arithmetic D = D - A
+MVV (MVI) A = 138
+MVV (AUI) A += 256
+ATH D A 0
+Arithmetic A = A + D
+LDR A = Memory @ A + 0
+MVV (MVI) B = 85
+MVV (AUI) B += 256
+MVV (MVI) D = 29
+MVV (AUI) D += 256
+LDR D = Memory @ D + 0
+ATH D B 0
+Arithmetic B = B + D
+LDR B = Memory @ B + 0
+ATH B A 0
+Arithmetic A = A + B
+MVV (MVI) B = 255
+MVV (AUI) B += 0
+ATH B A 8
+Arithmetic A = B & A
+MVV (MVI) B = 85
+MVV (AUI) B += 256
+MVV (MVI) D = 29
+MVV (AUI) D += 256
+LDR D = Memory @ D + 0
+ATH D B 0
+Arithmetic B = B + D
+STR Memory @ B + 0 = A
+MVR C = C + 1
+MVV (MVI) A = 29
+MVV (AUI) A += 256
+STR Memory @ A + 0 = C
+MVV (MVI) D = 220
+MVV (AUI) D += 0
+JMR D
+POP to D
+POP to C
+POP to B
+POP to A
+NOA RET
+ATH A D 0
+Arithmetic D = D + A
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR C = A + 0
+STR Memory @ B + 0 = A
+JMR A
+MVV (MVI) B = 0
+JCP EQ C === A --> Memory @ A
+CAL C
+NOA NOP
+JMR B
+Unknown opcode 14. 14
+JMP += 1
+PSH A
+STA Memory @ 0 = A
+Unknown opcode 15. 15
+CAL B
+LDR B = Memory @ A + 0
+JMP += 2
+STA Memory @ 0 = B
+ATH A A 0
+Arithmetic A = A + A
+MVR B = A + 0
+CAL A
+PSH A
+POP to A
+MVR C = A + 0
+LDA B = Memory @ 0
+MVV (MVI) C = 0
+LDA A = Memory @ 0
+MVR A = A + 0
+LDR C = Memory @ A + 0
+Unknown opcode 14. 46
+ATH A C 0
+Arithmetic C = C + A
+STA Memory @ 0 = C
+STA Memory @ 0 = D
+Unknown opcode 15. 47
+JCP EQ B === A --> Memory @ A
+JCP EQ A === A --> Memory @ A
+POP to C
+LDR A = Memory @ A + 0
+NOA RET
+PSH A
+POP to B
+NOA SYS
+STR Memory @ A + 0 = A
+STR Memory @ C + 0 = A
+Unknown opcode 15. 31
+Unknown opcode 14. 30
+MVV (MVI) D = 0
+LDA C = Memory @ 0
+MVR D = A + 0
+JMR C
+LDR D = Memory @ A + 0
+MVV (MVI) A = 0
+ATH A B 0
+Arithmetic B = B + A
+JMP += 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVR A = A + 0
+MVV (ADI) C += 0
+CAL C
+MVV (ADI) D += 0
+CAL D
+CAL C
+Unknown opcode 15. 111
+STA Memory @ 1 = D
+MVV (ADI) C += 0
+STR Memory @ C + 0 = B
+JMP += 6
+Unknown opcode 14. 110
+Unknown opcode 15. 111
+STA Memory @ 1 = C
+MVV (ADI) C += 0
+STR Memory @ C + 0 = B
+STA Memory @ 1 = C
+MVV (ADI) C += 0
+STR Memory @ C + 0 = B
+JMP += 6
+Unknown opcode 14. 110
+Unknown opcode 15. 111
+STA Memory @ 1 = C
+CAL C
+LDR D = Memory @ B + 0
+MVV (ADI) C += 0
+STA Memory @ 1 = C
+CAL C
+Unknown opcode 15. 111
+MVV (ADI) C += 0
+STR Memory @ C + 0 = B
+CAL D
+JMP += 6
+Unknown opcode 14. 110
+Unknown opcode 15. 111
+STA Memory @ 1 = D
+Unknown opcode 15. 111
+STA Memory @ 1 = C
+CAL D
+MVR D = B + 0
+LDR D = Memory @ B + 0
+CAL C
+Unknown opcode 15. 111
+JCP EQ D === B --> Memory @ A
+JMP += 6
+ATH B D 0
+Arithmetic D = D + B
+LDR D = Memory @ B + 0
+JMP += 6
+Unknown opcode 15. 111
+STR Memory @ C + 0 = B
+JMP += 6
+STA Memory @ 1 = C
+MVR A = A + 0
+Unknown opcode 15. 127
+ATH C B 0
+Arithmetic B = B + C
+ATH D B 0
+Arithmetic B = B + D
+LDR D = Memory @ D + 0
+PSH D
+Unknown opcode 15. 175
+POP to B
+JMR D
+Unknown opcode 14. 158
+PSH D
+CAL A
+STA Memory @ 2 = D
+LDA D = Memory @ 3
+Unknown opcode 15. 207
+PSH C
+JCP EQ C === D --> Memory @ A
+Unknown opcode 14. 94
+STA Memory @ 0 = A
+Unknown opcode 15. 175
+POP to B
+STA Memory @ 2 = D
+STA Memory @ 3 = A
+PSH C
+Unknown opcode 14. 190
+LDR C = Memory @ C + 0
+MVV (ADI) B += 0
+JMR C
+POP to B
+MVV (AUI) B += 0
+ATH C C 0
+Arithmetic C = C + C
+ATH D A 0
+Arithmetic A = A + D
+MVR C = C + 0
+LDR C = Memory @ B + 0
+MVV (ADI) C += 0
+PSH B
+MVV (MUI) B = 0
+POP to B
+POP to D
+CAL A
+Unknown opcode 15. 175
+POP to A
+ATH C D 0
+Arithmetic D = D + C
+JMR D
+JMP += 14
+Unknown opcode 15. 175
+Unknown opcode 15. 223
+JMP += 10
+JMP += 11
+JMP += 13
+MVR A = A + 0
+JCP EQ C === B --> Memory @ A
+STR Memory @ C + 0 = B
+MVV (ADI) C += 0
+PSH B
+LDA B = Memory @ 1
+MVR A = A + 0
+JMR D
+MVR C = A + 0
+MVR A = A + 0
+STA Memory @ 1 = A
+Unknown opcode 15. 111
+LDR D = Memory @ B + 0
+LDR D = Memory @ B + 0
+CAL C
+STA Memory @ 1 = C
+ATH B D 0
+Arithmetic D = D + B
+JMR A
+MVR A = A + 0
+PSH B
+LDR D = Memory @ B + 0
+Unknown opcode 15. 111
+Unknown opcode 14. 110
+PSH B
+JMR A
+MVR A = A + 0

@@ -50,7 +50,7 @@ enableRobotsTXT = true
 
     [params.header.title]
       # URL of the LOGO
-      logo = "/images/logo.jpg"
+      logo = "/images/slime-attack.gif"
       # title name
       name = ""
       

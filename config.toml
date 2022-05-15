@@ -13,7 +13,7 @@ enableRobotsTXT = true
 [params]
   # LoveIt theme version
   version = "0.2.X"
-  images = ["/images/logo.jpg"]
+  images = ["/images/slime-attack.gif"]
   defaultTheme = "dark"
   [params.app]
     # optional site title override for the app when added to an iOS home screen or Android launcher
@@ -57,7 +57,7 @@ enableRobotsTXT = true
     [params.home.profile]
       enable = true
       # URL of avatar shown in home page
-      avatarURL = "/images/logo.jpg"
+      avatarURL = "/images/slime-attack.gif"
       # LoveIt CHANGED | 0.2.7 title shown in home page (HTML format is supported)
       title = "Frost's blog"
       # subtitle shown in home page

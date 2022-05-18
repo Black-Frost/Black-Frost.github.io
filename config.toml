@@ -8,7 +8,7 @@ relativeURLs = true
 # Change the default theme to be use when building the site with Hugo
 theme = "LoveIt"
 enableRobotsTXT = true
-googleAnalytics = "315636330"
+googleAnalytics = "G-CY316V8Z0V"
 
 
 [params]

@@ -72,7 +72,11 @@ googleAnalytics = "G-CY316V8Z0V"
     GitHub = "Black-Frost"
     Facebook = "tiendung.vovan.940"
     Twitter = "Fr0st1706"
-
+    
+  [params.analytics]
+    enable = true
+    [params.analytics.google]
+      id = "G-CY316V8Z0V"
 
 [menu]
   [[menu.main]]

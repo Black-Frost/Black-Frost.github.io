@@ -7,7 +7,7 @@ banner: /images/logo.jpg
 
 Welcome to my blog!
 
-I am Tien Dung, a.k.a `Frost`.
+I am `Frost`.
 
 Currently a CS student at Ho Chi Minh City University of Technology and a member of team [Efiens](https://blog.efiens.com/team/).
 

@@ -62,7 +62,7 @@ googleAnalytics = "G-CY316V8Z0V"
       # LoveIt CHANGED | 0.2.7 title shown in home page (HTML format is supported)
       title = "Frost's blog"
       # subtitle shown in home page
-      subtitle = "Welcome to my stupid blog!"
+      subtitle = "The platypus is a semiaquatic, egg-laying mammal."
       # whether to use typeit animation for subtitle
       typeit = true
       # whether to show social links

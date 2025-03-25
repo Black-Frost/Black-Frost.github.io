@@ -4,7 +4,7 @@ date: 2023-09-10T00:00:00+07:00
 tags:
  - ctf
  - writeup
-draft: false
+draft: true
 ---
 
 This is a short writeup for the challenges I managed to solve in Hitcon CTF 2023. The challenges was not impossibly hard as I initially thought, but they was enjoyable nonetheless.

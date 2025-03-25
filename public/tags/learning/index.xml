@@ -34,6 +34,6 @@ Note: Bài này ở wordpress thì mình ghi khá chi tiết, tuy nhiên khi d�
     <guid>/posts/old_posts/2020-7-7-aslr/</guid>
     <description><![CDATA[Cuối cùng thì mình cũng hoàn thành xong cái blog này. Mặc dù chưa được đẹp lắm nhưng mình khá hài lòng về nó.
 Giờ chỉ còn một việc nữa là đưa các bài viết từ trang wordpress cũ di cư sang bên này thôi. Bắt đầu từ bài đầu tiên nào!
- 1. Address Space Layout Randomization (ASLR):  ASLR là một kỹ thuật giúp cho địa chỉ của các phân vùng bộ nhớ thay đổi ngẫu nhiên với mỗi lần chạy.]]></description>
+1. Address Space Layout Randomization (ASLR): ASLR là một kỹ thuật giúp cho địa chỉ của các phân vùng bộ nhớ thay đổi ngẫu nhiên với mỗi lần chạy.]]></description>
 </item></channel>
 </rss>

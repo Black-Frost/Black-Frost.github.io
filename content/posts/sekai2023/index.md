@@ -7,7 +7,6 @@ tags:
 draft: false
 ---
 
-
 ## Conquest of Camelot
 {{< admonition type=info title="Given file" open=true >}}
 [camelot](camelot)

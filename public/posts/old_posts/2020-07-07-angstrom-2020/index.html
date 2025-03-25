@@ -9,12 +9,11 @@
 <meta property="og:description" content="So this post’s gonna be in English. Why? I don’t know, just feel like writing in English 🙂
 I spent the whole week doing nothing but solving the RE challenges from Angstromctf (so far, I only managed to solve half of them, the easy half, that is). So I figured I should write a little bit about those challenges and what I’ve learned trying to solve them. Ok, here we go." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/old_posts/2020-07-07-angstrom-2020/" /><meta property="og:image" content="/images/logo.jpg"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="/posts/old_posts/2020-07-07-angstrom-2020/" /><meta property="og:image" content="/images/slime-attack.gif"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-07-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-07-07T00:00:00+00:00" />
-
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="/images/logo.jpg"/>
+<meta name="twitter:image" content="/images/slime-attack.gif"/>
 
 <meta name="twitter:title" content="A week with Angstromctf 2020"/>
 <meta name="twitter:description" content="So this post’s gonna be in English. Why? I don’t know, just feel like writing in English 🙂
@@ -31,7 +30,7 @@ I spent the whole week doing nothing but solving the RE challenges from Angstrom
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "\/posts\/old_posts\/2020-07-07-angstrom-2020\/"
-        },"genre": "posts","keywords": "writeup","wordcount":  868 ,
+        },"genre": "posts","keywords": "writeup","wordcount":  876 ,
         "url": "\/posts\/old_posts\/2020-07-07-angstrom-2020\/","datePublished": "2020-07-07T00:00:00+00:00","dateModified": "2020-07-07T00:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": "Frost"},"author": {
@@ -48,11 +47,11 @@ I spent the whole week doing nothing but solving the RE challenges from Angstrom
             <a href="../../../" title="Frost&#39;s blog"><img
         class="lazyload logo"
         src="../../../svg/loading.min.svg"
-        data-src="../../../images/logo.jpg"
-        data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x"
+        data-src="../../../images/slime-attack.gif"
+        data-srcset="../../../images/slime-attack.gif, ../../../images/slime-attack.gif 1.5x, ../../../images/slime-attack.gif 2x"
         data-sizes="auto"
-        alt="/images/logo.jpg"
-        title="/images/logo.jpg" /></a>
+        alt="/images/slime-attack.gif"
+        title="/images/slime-attack.gif" /></a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="../../../posts/"> Posts </a><a class="menu-item" href="../../../tags/"> Tags </a><a class="menu-item" href="../../../about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
@@ -68,11 +67,11 @@ I spent the whole week doing nothing but solving the RE challenges from Angstrom
                 <a href="../../../" title="Frost&#39;s blog"><img
         class="lazyload logo"
         src="../../../svg/loading.min.svg"
-        data-src="../../../images/logo.jpg"
-        data-srcset="../../../images/logo.jpg, ../../../images/logo.jpg 1.5x, ../../../images/logo.jpg 2x"
+        data-src="../../../images/slime-attack.gif"
+        data-srcset="../../../images/slime-attack.gif, ../../../images/slime-attack.gif 1.5x, ../../../images/slime-attack.gif 2x"
         data-sizes="auto"
-        alt="/images/logo.jpg"
-        title="/images/logo.jpg" /></a>
+        alt="/images/slime-attack.gif"
+        title="/images/slime-attack.gif" /></a>
             </div>
             <div class="menu-toggle" id="menu-toggle-mobile">
                 <span></span><span></span><span></span>
@@ -95,7 +94,7 @@ I spent the whole week doing nothing but solving the RE challenges from Angstrom
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">A week with Angstromctf 2020</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="../../../" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Frost</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-07-07">2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;868 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-07-07">2020-07-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;876 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -154,7 +153,7 @@ I checked the file one more time and see this:</p>
 <p>Then checked the source:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -168,23 +167,23 @@ I checked the file one more time and see this:</p>
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">_IONBF</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="kt">int</span> <span class="n">fval</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
-    <span class="n">alarm</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>  <span class="c1">// sometimes the child processes don&#39;t die
-</span><span class="c1"></span>    <span class="n">prctl</span><span class="p">(</span><span class="n">PR_SET_PDEATHSIG</span><span class="p">,</span> <span class="n">SIGTERM</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">fval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">setfif</span><span class="p">(</span><span class="n">getpid</span><span class="p">());</span>
-        <span class="n">child</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="n">setfif</span><span class="p">(</span><span class="n">fval</span><span class="p">);</span>
-        <span class="n">parent</span><span class="p">();</span>
-    <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">setvbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">_IONBF</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fval</span> <span class="o">=</span> <span class="nf">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">alarm</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>  <span class="c1">// sometimes the child processes don&#39;t die
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">prctl</span><span class="p">(</span><span class="n">PR_SET_PDEATHSIG</span><span class="p">,</span> <span class="n">SIGTERM</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">setfif</span><span class="p">(</span><span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">child</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">setfif</span><span class="p">(</span><span class="n">fval</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">parent</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -194,15 +193,15 @@ I checked the file one more time and see this:</p>
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">parent</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">char</span> <span class="n">inp</span><span class="p">[</span><span class="n">PS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;  </span><span class="se">\\</span><span class="s">   /</span><span class="se">\n</span><span class="s"> /-----</span><span class="se">\\\n</span><span class="s"> |  o  |</span><span class="se">\n</span><span class="s"> | </span><span class="se">\\</span><span class="s">|/ |</span><span class="se">\n</span><span class="s"> | / </span><span class="se">\\</span><span class="s"> |</span><span class="se">\n</span><span class="s"> </span><span class="se">\\</span><span class="s">-----/</span><span class="se">\n</span><span class="s">  |   |&#34;</span><span class="p">);</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;This TV show is so boring, it&#39;s just a guy standing still.&#34;</span><span class="p">);</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;I need a GOOD TV show to watch with my child.&#34;</span><span class="p">);</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;Which TV show do you recommend?&#34;</span><span class="p">);</span>
-    <span class="n">fgets</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">PS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
-  <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">parent</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">inp</span><span class="p">[</span><span class="n">PS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;  </span><span class="se">\\</span><span class="s">   /</span><span class="se">\n</span><span class="s"> /-----</span><span class="se">\\\n</span><span class="s"> |  o  |</span><span class="se">\n</span><span class="s"> | </span><span class="se">\\</span><span class="s">|/ |</span><span class="se">\n</span><span class="s"> | / </span><span class="se">\\</span><span class="s"> |</span><span class="se">\n</span><span class="s"> </span><span class="se">\\</span><span class="s">-----/</span><span class="se">\n</span><span class="s">  |   |&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;This TV show is so boring, it&#39;s just a guy standing still.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;I need a GOOD TV show to watch with my child.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Which TV show do you recommend?&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fgets</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">PS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>The string that got printed and the fgets() was all in parent() funcion. So I assumed that child() function was for the pwn challenge and ignored it. Of course that was wrong. If it hasn’t been for the hint from Catafact, I couldn’t have solved this 😀 .</p>
 <p>But there was still something I don’t understand: How can both parent() and child() get executed? (There’s an if statement there). So of course, Google.</p>
@@ -211,7 +210,7 @@ I checked the file one more time and see this:</p>
 <p>After I got that, the challenge didn’t seem hard anymore. The program takes my input, and converts them to 4 “number” in “base 13”. Instead of “012345…”, this “base 13” has the letters in “angstromctf20” for digits. After the conversion, the program performs a comparison:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -225,19 +224,19 @@ I checked the file one more time and see this:</p>
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="s">&#34;artomtf2srn00tgm2f&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="n">strcmp</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span> <span class="s">&#34;ng0fa0mat0tmmmra0c&#34;</span><span class="p">)</span> <span class="o">||</span>
-        <span class="n">strcmp</span><span class="p">(</span><span class="n">c3</span><span class="p">,</span> <span class="s">&#34;ngnrmcornttnsmgcgr&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="n">strcmp</span><span class="p">(</span><span class="n">c4</span><span class="p">,</span> <span class="s">&#34;a0fn2rfa00tcgctaot&#34;</span><span class="p">))</span> 
-    <span class="p">{</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Oh I&#39;ve watched that show, I don&#39;t really like it.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="c1">// This is the flag for the rev challenge
-</span><span class="c1"></span>    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;Wait that name sounds familiar...&#34;</span><span class="p">);</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;...&#34;</span><span class="p">);</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Oh I know why! It&#39;s because the flag is actf{% raw  %}{%s}{% endraw %}!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">inp</span><span class="p">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nf">strcmp</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="s">&#34;artomtf2srn00tgm2f&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="nf">strcmp</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span> <span class="s">&#34;ng0fa0mat0tmmmra0c&#34;</span><span class="p">)</span> <span class="o">||</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">strcmp</span><span class="p">(</span><span class="n">c3</span><span class="p">,</span> <span class="s">&#34;ngnrmcornttnsmgcgr&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="nf">strcmp</span><span class="p">(</span><span class="n">c4</span><span class="p">,</span> <span class="s">&#34;a0fn2rfa00tcgctaot&#34;</span><span class="p">))</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Oh I&#39;ve watched that show, I don&#39;t really like it.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// This is the flag for the rev challenge
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;Wait that name sounds familiar...&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">puts</span><span class="p">(</span><span class="s">&#34;...&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Oh I know why! It&#39;s because the flag is actf{% raw  %}{%s}{% endraw %}!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">inp</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>All I needed to do was writing a script to convert those 4 strings into the correct flag. Done!</p>
 <hr>
@@ -271,8 +270,8 @@ I checked the file one more time and see this:</p>
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.85.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="../../../" target="_blank">Frost</a></span></div>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.117.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="../../../" target="_blank">Frost</a></span></div>
         </div>
     </footer></div>
 
@@ -281,5 +280,8 @@ I checked the file one more time and see this:</p>
             </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw"></i>
             </a>
-        </div><script type="text/javascript" src="../../../lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="../../../lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="../../../lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":100},"comment":{}};</script><script type="text/javascript" src="../../../js/theme.min.js"></script></body>
+        </div><script type="text/javascript" src="../../../lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="../../../lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="../../../lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":100},"comment":{}};</script><script type="text/javascript" src="../../../js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'G-CY316V8Z0V');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-CY316V8Z0V" async></script></body>
 </html>

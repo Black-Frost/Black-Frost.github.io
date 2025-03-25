@@ -7,9 +7,7 @@ banner: /images/logo.jpg
 
 Welcome to my blog!
 
-I am `Frost`.
-
-Currently a CS student at Ho Chi Minh City University of Technology and a member of team [Efiens](https://blog.efiens.com/team/).
+I am `Frost`, or `fukurou`, or `osaker`— or whatever character name from a show or game I'm into that particular month...
 
 My main CTF category is Reverse Engineering.
 
